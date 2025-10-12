@@ -12,13 +12,15 @@ import path from "path";
 dotenv.config({});
 const app = express();
 
+await connectDB();
+
 // middleware
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 
 const corsOptions = {
-  origin: ["http://localhost:5173"],
+  origin: ["http://localhost:5173", "https://job-portal-367396.netlify.app"],
   credentials: true,
 };
 
@@ -37,16 +39,6 @@ app.get("/", (req, res) => {
   res.send("Backend server is running");
 });
 
-// if (process.env.NODE_ENV === "production") {
-//   const dirpath = path.resolve();
-//   app.use(express.static("../Frontend/dist"));
-
-//   app.get("*", (req, res) => {
-//     res.sendFile(path.resolve(dirpath, "../Frontend/dist", "index/html"));
-//   });
-// }
-
 app.listen(PORT, () => {
-  connectDB();
   console.log(`Server is running on port ${PORT}`);
 });
