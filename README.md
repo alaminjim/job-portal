@@ -2,6 +2,9 @@
 
 Welcome to the Job Portal project! This project is a job portal application built using the MERN stack (MongoDB, Express, React, Node.js).
 
+# Live Link 
+https://job-portal-367396.netlify.app
+
 ## Table of Contents
 
 - [Project Overview](#project-overview)
