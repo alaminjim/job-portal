@@ -82,7 +82,7 @@ export const getAllJobs = async (req, res) => {
       .sort({ createdAt: -1 });
 
     if (!jobs || jobs.length === 0) {
-      return res.status(404).json({ message: "No jobs found", success: false });
+      return res.status(200).json({ jobs: [], success: true });
     }
     return res.status(200).json({ jobs, success: true });
   } catch (error) {
@@ -126,7 +126,7 @@ export const getAdminJobs = async (req, res) => {
       sort: { createdAt: -1 },
     });
     if (!jobs || jobs.length === 0) {
-      return res.status(404).json({ message: "No jobs found", success: false });
+      return res.status(200).json({ jobs: [], success: true });
     }
     return res.status(200).json({ jobs, success: true });
   } catch (error) {

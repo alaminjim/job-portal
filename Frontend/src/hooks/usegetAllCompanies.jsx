@@ -1,19 +1,16 @@
 import { setCompanies } from "@/redux/companyslice";
 import axios from "axios";
 import { useEffect } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { toast } from "sonner";
 
 const useGetAllCompanies = () => {
   const dispatch = useDispatch();
+  const { token } = useSelector((store) => store.auth);
 
   useEffect(() => {
     const fetchCompanies = async () => {
-      const token = localStorage.getItem("token");
-      if (!token) {
-        toast.error("You must be logged in to view companies.");
-        return;
-      }
+      if (!token) return;
 
       try {
         const res = await axios.get(
@@ -22,6 +19,7 @@ const useGetAllCompanies = () => {
             headers: {
               Authorization: `Bearer ${token}`,
             },
+            withCredentials: true,
           }
         );
 
@@ -36,7 +34,7 @@ const useGetAllCompanies = () => {
     };
 
     fetchCompanies();
-  }, [dispatch]);
+  }, [dispatch, token]);
 };
 
 export default useGetAllCompanies;

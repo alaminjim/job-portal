@@ -46,7 +46,16 @@ const corsOptions = {
 app.use(cors(corsOptions));
 
 // Database connection check middleware
-app.use((req, res, next) => {
+app.use(async (req, res, next) => {
+  // If connecting (2), wait for a few seconds
+  if (mongoose.connection.readyState === 2) {
+    let attempts = 0;
+    while (mongoose.connection.readyState === 2 && attempts < 30) {
+      await new Promise((resolve) => setTimeout(resolve, 100)); // wait 100ms
+      attempts++;
+    }
+  }
+
   if (mongoose.connection.readyState !== 1) {
     return res.status(503).json({
       message: `Database connection not ready. Error: ${connectionError || "Check Atlas IP whitelist or URI"}`,

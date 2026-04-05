@@ -8,6 +8,7 @@ const useGetAllJobs = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const { searchedQuery } = useSelector((store) => store.job);
+  const { token } = useSelector((store) => store.auth);
 
   useEffect(() => {
     const fetchAllJobs = async () => {
@@ -17,10 +18,11 @@ const useGetAllJobs = () => {
 
       try {
         const res = await axios.get(
-          `${
-            import.meta.env.VITE_JOB_API_ENDPOINT
-          }/get?keyword=${searchedQuery}`,
-          { headers }
+          `${import.meta.env.VITE_JOB_API_ENDPOINT}/get?keyword=${searchedQuery}`,
+          {
+            headers,
+            withCredentials: true,
+          }
         );
 
         if (res.data.success) {
