@@ -34,25 +34,27 @@ export const postJob = async (req, res) => {
     const job = await Job.create({
       title,
       description,
-      requirements: requirements.split(","),
-      salary: Number(salary),
+      requirements: typeof requirements === "string" ? requirements.split(",") : requirements,
+      salary: String(salary),
       location,
       jobType,
-      experienceLevel: experience,
-      position,
+      experienceLevel: Number(experience),
+      position: Number(position),
       company: companyId,
       created_by: userId,
     });
-    res.status(201).json({
+    return res.status(201).json({
       message: "Job posted successfully.",
       job,
       success: true,
     });
   } catch (error) {
-    console.error(error);
-    return res
-      .status(500)
-      .json({ message: "Server error posting job", success: false });
+    console.error("Job post error:", error);
+    return res.status(500).json({
+      message: "Server error posting job",
+      error: error.message,
+      success: false,
+    });
   }
 };
 
@@ -77,10 +79,12 @@ export const getAllJobs = async (req, res) => {
     }
     return res.status(200).json({ jobs, success: true });
   } catch (error) {
-    console.error(error);
-    return res
-      .status(500)
-      .json({ message: "Server error fetching jobs", success: false });
+    console.error("Fetch all jobs error:", error);
+    return res.status(500).json({
+      message: "Server error fetching jobs",
+      error: error.message,
+      success: false,
+    });
   }
 };
 
@@ -96,10 +100,12 @@ export const getJobById = async (req, res) => {
     }
     return res.status(200).json({ job, success: true });
   } catch (error) {
-    console.error(error);
-    return res
-      .status(500)
-      .json({ message: "Server error fetching job details", success: false });
+    console.error("Fetch job by id error:", error);
+    return res.status(500).json({
+      message: "Server error fetching job details",
+      error: error.message,
+      success: false,
+    });
   }
 };
 
@@ -117,9 +123,11 @@ export const getAdminJobs = async (req, res) => {
     }
     return res.status(200).json({ jobs, success: true });
   } catch (error) {
-    console.error(error);
-    return res
-      .status(500)
-      .json({ message: "Server error fetching admin jobs", success: false });
+    console.error("Fetch admin jobs error:", error);
+    return res.status(500).json({
+      message: "Server error fetching admin jobs",
+      error: error.message,
+      success: false,
+    });
   }
 };
