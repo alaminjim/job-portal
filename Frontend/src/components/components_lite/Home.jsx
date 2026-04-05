@@ -5,6 +5,8 @@ import Header from "./Header";
 import Categories from "./Categories";
 import LatestJobs from "./LatestJobs";
 import Footer from "./Footer";
+import HomeStats from "./HomeStats";
+import FeatureAura from "./FeatureAura";
 import useGetAllJobs from "@/hooks/useGetAllJobs";
 import { useNavigate } from "react-router-dom";
 import { setSearchedQuery } from "@/redux/jobSlice";
@@ -30,9 +32,11 @@ const Home = () => {
     <div>
       <Navbar />
       <Header />
+      <HomeStats />
       <Categories />
       {/* LatestJobs now handles its own internal skeleton state */}
       <LatestJobs loading={loading} />
+      <FeatureAura />
       <Footer />
     </div>
   );
