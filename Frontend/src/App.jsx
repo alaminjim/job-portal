@@ -15,6 +15,7 @@ import CompanySetup from "@/components/admincomponent/CompanySetup";
 import AdminJobs from "@/components/admincomponent/AdminJobs";
 import PostJob from "@/components/admincomponent/PostJob";
 import Applicants from "@/components/admincomponent/Applicants";
+import AdminAllApplicants from "@/components/admincomponent/AdminAllApplicants";
 import ProtectedRoute from "@/components/admincomponent/ProtectedRoute";
 
 // Auth Components
@@ -70,6 +71,14 @@ const appRouter = createBrowserRouter([
     element: (
       <ProtectedRoute>
         <PostJob />
+      </ProtectedRoute>
+    ),
+  },
+  {
+    path: "/admin/applicants",
+    element: (
+      <ProtectedRoute>
+        <AdminAllApplicants />
       </ProtectedRoute>
     ),
   },

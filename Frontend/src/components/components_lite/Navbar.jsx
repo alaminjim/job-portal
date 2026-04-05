@@ -41,11 +41,13 @@ const Navbar = () => {
       ? [
           { label: "Companies", to: "/admin/companies" },
           { label: "Jobs", to: "/admin/jobs" },
+          { label: "Applicants", to: "/admin/applicants" },
         ]
       : [
           { label: "Home", to: "/" },
           { label: "Browse", to: "/Browse" },
           { label: "Jobs", to: "/Jobs" },
+          { label: "My Applications", to: "/Profile" },
         ];
 
   return (

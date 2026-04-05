@@ -12,40 +12,56 @@ import { useSelector } from "react-redux";
 
 const AppliedJob = () => {
   const { allAppliedJobs } = useSelector((store) => store.job);
+
   return (
-    <div>
+    <div className="overflow-x-auto rounded-2xl border border-gray-100 bg-white/50">
       <Table>
-        <TableCaption>Recent Applied Jobs</TableCaption>
-        <TableHeader>
+        <TableCaption className="pb-4 italic text-sm text-gray-400">
+          Tracking your career journey — one application at a time.
+        </TableCaption>
+        <TableHeader className="bg-gray-50/80">
           <TableRow>
-            <TableHead>Date</TableHead>
-            <TableHead>Job Title</TableHead>
-            <TableHead>Company</TableHead>
-            <TableHead className="text-right">Status</TableHead>
+            <TableHead className="font-bold text-gray-700">Date</TableHead>
+            <TableHead className="font-bold text-gray-700">Job Title</TableHead>
+            <TableHead className="font-bold text-gray-700">Company</TableHead>
+            <TableHead className="font-bold text-gray-700 text-center">Applicants</TableHead>
+            <TableHead className="text-right font-bold text-gray-700">Status</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
           {allAppliedJobs.length <= 0 ? (
-            <span>You have not applied any job yet. </span>
+            <TableRow>
+              <TableCell colSpan={5} className="text-center py-10 text-gray-400 italic">
+                You haven't applied to any jobs yet. Start your search now!
+              </TableCell>
+            </TableRow>
           ) : (
             allAppliedJobs.map((appliedJob) => (
-              <TableRow key={appliedJob._id}>
-                <TableCell>{appliedJob?.createdAt.split("T")[0]}</TableCell>
-                <TableCell>{appliedJob.job?.title}</TableCell>
-                <TableCell>{appliedJob.job?.company.name}</TableCell>
+              <TableRow key={appliedJob._id} className="hover:bg-purple-50/30 transition-colors">
+                <TableCell className="text-gray-500 font-medium">
+                  {new Date(appliedJob?.createdAt).toLocaleDateString()}
+                </TableCell>
+                <TableCell className="font-bold text-gray-900 group-hover:text-aura transition-colors">
+                  {appliedJob.job?.title}
+                </TableCell>
+                <TableCell className="text-gray-600 font-medium">{appliedJob.job?.company?.name}</TableCell>
+                <TableCell className="text-center">
+                  <Badge variant="secondary" className="bg-indigo-50 text-indigo-600 border-indigo-100 font-bold px-3">
+                    {appliedJob.job?.applications?.length || 0} Applied
+                  </Badge>
+                </TableCell>
                 <TableCell className="text-right">
                   <Badge
-                    className={`text-center ${
+                    className={`capitalize px-4 py-1.5 rounded-full shadow-sm text-[12px] font-bold ${
                       appliedJob?.status === "rejected"
-                        ? "bg-red-500"
+                        ? "bg-red-100 text-red-600 border-red-200"
                         : appliedJob?.status === "accepted"
-                        ? "bg-green-600"
-                        : "bg-gray-500"
+                        ? "bg-green-100 text-green-600 border-green-200"
+                        : "bg-blue-100 text-blue-600 border-blue-200"
                     }`}
                   >
-                    {" "}
                     {appliedJob?.status}
-                  </Badge>{" "}
+                  </Badge>
                 </TableCell>
               </TableRow>
             ))

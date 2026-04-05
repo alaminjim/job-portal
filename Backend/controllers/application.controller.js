@@ -118,3 +118,34 @@ export const updateStatus = async (req, res) => {
     return res.status(500).json({ message: "Server error", success: false });
   }
 };
+
+// NEW: Get all applicants for all jobs of a recruiter
+export const getAdminApplicants = async (req, res) => {
+  try {
+    const recruiterId = req.id;
+    // Find all jobs created by this recruiter
+    const jobs = await Job.find({ created_by: recruiterId });
+    const jobIds = jobs.map((job) => job._id);
+
+    // Find all applications for these jobs
+    const applications = await Application.find({ job: { $in: jobIds } })
+      .populate({
+        path: "applicant",
+      })
+      .populate({
+        path: "job",
+        populate: {
+          path: "company",
+        },
+      })
+      .sort({ createdAt: -1 });
+
+    return res.status(200).json({
+      applications,
+      success: true,
+    });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ message: "Server error", success: false });
+  }
+};
