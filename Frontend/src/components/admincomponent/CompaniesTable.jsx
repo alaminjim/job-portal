@@ -35,8 +35,12 @@ const CompaniesTable = () => {
     setFilterCompany(filteredCompany);
   }, [companies, searchCompanyByText]);
 
-  if (!companies) {
-    return <div>Loading...</div>;
+  if (!companies || companies.length === 0) {
+    return (
+      <div className="text-center py-20 text-gray-500">
+        No companies found. Add your first company to get started.
+      </div>
+    );
   }
 
   return (

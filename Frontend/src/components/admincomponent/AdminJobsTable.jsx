@@ -41,8 +41,12 @@ const AdminJobsTable = () => {
     setFilterJobs(filteredJobs);
   }, [allAdminJobs, searchJobByText]);
 
-  if (!companies) {
-    return <div>Loading...</div>;
+  if (!companies || companies.length === 0) {
+    return (
+      <div className="text-center py-20 text-gray-500">
+        Register a company first to see admin jobs.
+      </div>
+    );
   }
 
   return (

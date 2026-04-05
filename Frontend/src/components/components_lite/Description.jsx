@@ -90,8 +90,35 @@ const Description = () => {
 
     fetchSingleJobs();
   }, [jobId, dispatch, user?._id]);
+
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center min-h-[50vh]">
+        <div className="flex flex-col items-center gap-4">
+          <div className="w-10 h-10 border-4 border-purple-500 border-t-transparent rounded-full animate-spin"></div>
+          <p className="text-gray-500 font-medium tracking-wide">
+            Loading Job Details...
+          </p>
+        </div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="flex flex-col items-center justify-center min-h-[50vh] gap-4">
+        <p className="text-red-500 font-medium">Error: {error}</p>
+        <Button onClick={() => window.location.reload()} variant="outline">
+          Try Again
+        </Button>
+      </div>
+    );
+  }
+
   if (!singleJob) {
-    return <div>Loading...</div>;
+    return (
+      <div className="text-center py-20 text-gray-500">Job not found.</div>
+    );
   }
 
   return (

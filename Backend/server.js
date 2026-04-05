@@ -44,6 +44,17 @@ const corsOptions = {
 
 app.use(cors(corsOptions));
 
+// Database connection check middleware
+app.use((req, res, next) => {
+  if (mongoose.connection.readyState !== 1) {
+    return res.status(503).json({
+      message: "Database connection not ready. Check Atlas IP whitelist.",
+      success: false,
+    });
+  }
+  next();
+});
+
 const PORT = process.env.PORT || 5000;
 
 // api routes
