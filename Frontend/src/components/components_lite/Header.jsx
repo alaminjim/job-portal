@@ -65,23 +65,22 @@ const Header = () => {
           Start your journey towards a meaningful career today with curated job matches.
         </motion.p>
 
-        {/* Search Box */}
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.6 }}
-          className="flex w-full max-w-3xl mx-auto glass-card rounded-full overflow-hidden p-1.5 gap-2 border-white/20"
+          className="flex items-center w-full max-w-3xl mx-auto glass-card rounded-full overflow-hidden p-1.5 pr-1.5 gap-2 border-white/30 shadow-2xl"
         >
           <input
             type="text"
             value={query}
             onChange={(e) => setQuery(e.target.value)}
             placeholder="Search by job title, company, or skills..."
-            className="flex-1 px-6 py-3 bg-transparent text-gray-800 outline-none text-base md:text-lg placeholder:text-gray-400"
+            className="flex-1 px-8 py-4 bg-transparent text-gray-800 outline-none text-base md:text-lg placeholder:text-gray-400 font-medium"
           />
           <Button
             onClick={searchjobHandler}
-            className="aura-gradient hover:opacity-90 text-white rounded-full px-8 py-3 transition-all duration-300 font-semibold shadow-lg hover:scale-105 active:scale-95"
+            className="aura-gradient hover:opacity-90 text-white rounded-full w-14 h-14 md:w-auto md:px-10 flex items-center justify-center transition-all duration-300 font-bold shadow-lg hover:scale-105 active:scale-95 flex-shrink-0"
           >
             <Search className="h-6 w-6" />
           </Button>
