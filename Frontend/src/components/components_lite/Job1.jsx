@@ -2,7 +2,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "../ui/button";
-import { Avatar, AvatarImage } from "../ui/avatar";
+import { Avatar, AvatarImage, AvatarFallback } from "../ui/avatar";
 import { Badge } from "../ui/badge";
 import { Bookmark, BookMarked } from "lucide-react";
 import { useDispatch, useSelector } from "react-redux";
@@ -64,8 +64,11 @@ const Job1 = ({ job }) => {
 
       {/* Company Section */}
       <div className="flex items-center gap-3 my-3">
-        <Avatar className="w-12 h-12 border border-gray-200">
-          <AvatarImage src={job?.company?.logo} />
+        <Avatar className="w-12 h-12 border border-gray-100 shadow-sm flex-shrink-0">
+          <AvatarImage src={job?.company?.logo} className="object-contain p-1" />
+          <AvatarFallback className="bg-purple-100 text-purple-700 font-bold uppercase">
+            {job?.company?.name?.charAt(0) || "C"}
+          </AvatarFallback>
         </Avatar>
         <div>
           <h1 className="font-semibold text-lg text-gray-800">

@@ -1,4 +1,4 @@
-import { Avatar, AvatarImage } from "../ui/avatar";
+import { Avatar, AvatarImage, AvatarFallback } from "../ui/avatar";
 import { Badge } from "../ui/badge";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
@@ -29,8 +29,11 @@ const JobCards = ({ job }) => {
       )}
       {/* Company / Name */}
       <div className="flex items-center gap-3 my-3">
-        <Avatar className="w-12 h-12 border border-gray-200 rounded-full">
-          <AvatarImage src={job?.company?.logo} />
+        <Avatar className="w-12 h-12 border border-gray-200 shadow-sm flex-shrink-0">
+          <AvatarImage src={job?.company?.logo} className="object-contain p-1" />
+          <AvatarFallback className="bg-purple-100 text-purple-700 font-bold uppercase">
+            {job?.company?.name?.charAt(0) || "C"}
+          </AvatarFallback>
         </Avatar>
         <div>
           <h1 className="font-semibold text-lg text-gray-800">

@@ -8,6 +8,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { setSingleJob } from "@/redux/jobSlice";
 import { toast } from "sonner";
 import { JobDetailSkeleton } from "./JobSkeleton";
+import { Avatar, AvatarImage, AvatarFallback } from "../ui/avatar";
 
 const Description = () => {
   const params = useParams();
@@ -119,22 +120,28 @@ const Description = () => {
   return (
     <div>
       <div className="max-w-7xl lg:mx-auto my-10 mx-5">
-        <div className="flex items-center justify-between">
-          <div>
-            <h1 className="font-bold text-xl ">{singleJob?.title}</h1>
-            <div className=" flex gap-2 items-center mt-4 ">
-              <Badge className={" text-blue-600 font-bold"} variant={"ghost"}>
-                {singleJob?.position} Open Positions
-              </Badge>
-              <Badge className={" text-[#FA4F09] font-bold"} variant={"ghost"}>
-                {singleJob?.salary}LPA
-              </Badge>
-              <Badge className={" text-[#6B3AC2]  font-bold"} variant={"ghost"}>
-                {singleJob?.location}
-              </Badge>
-              <Badge className={" text-black font-bold"} variant={"ghost"}>
-                {singleJob?.jobType}
-              </Badge>
+        <div className="flex items-center justify-between mb-6">
+          <div className="flex items-center gap-4">
+            <Avatar className="w-16 h-16 border border-gray-200 shadow-sm flex-shrink-0">
+               <AvatarImage src={singleJob?.company?.logo} className="object-contain p-2" />
+               <AvatarFallback className="bg-purple-100 text-purple-700 font-extrabold text-xl">
+                 {singleJob?.company?.name?.charAt(0) || "C"}
+               </AvatarFallback>
+            </Avatar>
+            <div>
+              <h1 className="font-extrabold text-3xl text-gray-900 tracking-tight">{singleJob?.title}</h1>
+              <p className="text-gray-500 font-medium">{singleJob?.company?.name} • {singleJob?.location}</p>
+              <div className=" flex gap-2 items-center mt-2">
+                <Badge className={" text-blue-600 font-bold border-blue-100 bg-blue-50"} variant={"outline"}>
+                  {singleJob?.position} Positions
+                </Badge>
+                <Badge className={" text-orange-600 font-bold border-orange-100 bg-orange-50"} variant={"outline"}>
+                  {singleJob?.salary} LPA
+                </Badge>
+                <Badge className={" text-purple-600  font-bold border-purple-100 bg-purple-50"} variant={"outline"}>
+                  {singleJob?.jobType}
+                </Badge>
+              </div>
             </div>
           </div>
           <div>
