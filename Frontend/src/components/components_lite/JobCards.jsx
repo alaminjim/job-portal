@@ -1,7 +1,5 @@
-/* eslint-disable react/prop-types */
-import { Avatar, AvatarImage } from "@radix-ui/react-avatar";
-import { Badge } from "../ui/badge";
 import { useNavigate } from "react-router-dom";
+import { motion } from "framer-motion";
 
 const JobCards = ({ job }) => {
   const navigate = useNavigate();
