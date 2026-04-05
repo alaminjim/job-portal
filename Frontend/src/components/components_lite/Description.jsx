@@ -7,6 +7,7 @@ import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
 import { setSingleJob } from "@/redux/jobSlice";
 import { toast } from "sonner";
+import { JobDetailSkeleton } from "./JobSkeleton";
 
 const Description = () => {
   const params = useParams();
@@ -92,16 +93,7 @@ const Description = () => {
   }, [jobId, dispatch, user?._id]);
 
   if (loading) {
-    return (
-      <div className="flex items-center justify-center min-h-[50vh]">
-        <div className="flex flex-col items-center gap-4">
-          <div className="w-10 h-10 border-4 border-purple-500 border-t-transparent rounded-full animate-spin"></div>
-          <p className="text-gray-500 font-medium tracking-wide">
-            Loading Job Details...
-          </p>
-        </div>
-      </div>
-    );
+    return <JobDetailSkeleton />;
   }
 
   if (error) {

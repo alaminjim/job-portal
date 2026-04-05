@@ -1,13 +1,14 @@
 import JobCards from "./JobCards";
 import { useSelector } from "react-redux";
 import { motion } from "framer-motion";
-import NotFound from "../Shared/NotFound";
+import JobSkeleton from "./JobSkeleton";
 
 const LatestJobs = () => {
-  const allJobs = useSelector((state) => state.jobs?.allJobs || []); // Safely access allJobs
+  const { allJobs } = useSelector((store) => store.job);
+  const loading = !allJobs;
 
   return (
-    <div className="max-w-7xl mx-auto my-20">
+    <div className="max-w-7xl mx-auto my-20 px-4">
       <motion.h2
         initial={{ opacity: 0, y: 30 }}
         animate={{ opacity: 1, y: 0 }}

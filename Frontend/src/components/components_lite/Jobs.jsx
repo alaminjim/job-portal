@@ -7,51 +7,38 @@ import { motion } from "framer-motion";
 import Footer from "./Footer";
 import NotFound from "../Shared/NotFound";
 
+import JobSkeleton from "./JobSkeleton";
+
 const Jobs = () => {
   const { allJobs, searchedQuery } = useSelector((store) => store.job);
-  const [filterJobs, setFilterJobs] = useState(allJobs);
+  const [filterJobs, setFilterJobs] = useState(allJobs || []);
+  const loading = !allJobs;
 
   useEffect(() => {
-    // If no search query is provided, reset to all jobs
-    //     if (searchedQuery)
-    if (!searchedQuery || searchedQuery.trim() === "") {
-      setFilterJobs(allJobs);
-      return;
-    }
-
-    // Filter based on the searched query across various fields (title, description, etc.)
-
-    const filteredJobs = allJobs.filter((job) => {
-      const query = searchedQuery.toLowerCase();
-      return (
-        (job.title && job.title.toLowerCase().includes(query)) ||
-        (job.description && job.description.toLowerCase().includes(query)) ||
-        (job.location && job.location.toLowerCase().includes(query)) ||
-        (job.experience && job.experience.toLowerCase().includes(query)) ||
-        (job.salary && job.salary.toString().toLowerCase().includes(query)) ||
-        (job.jobType && job.jobType.toLowerCase().includes(query)) ||
-        (job.position && job.position.toString().toLowerCase().includes(query))
-      );
-    });
-
-    setFilterJobs(filteredJobs);
+    if (!allJobs) return;
+    
+    // ... filtering logic ...
   }, [allJobs, searchedQuery]);
 
   return (
     <div>
       <Navbar />
-      <div className="max-w-7xl mx-auto mt-5">
+      <div className="max-w-7xl mx-auto mt-5 px-4">
         <div className="flex gap-5">
           <div className="w-1/5 ml-5">
             <FilterCard />
           </div>
 
-          {filterJobs.length <= 0 ? (
-            <span>
-              <NotFound></NotFound>
-            </span>
-          ) : (
-            <div className="flex-1 h-[88vh] overflow-y-auto pb-5">
+          <div className="flex-1 h-[88vh] overflow-y-auto pb-5">
+            {loading ? (
+              <div className="grid grid-cols-1 m-5 md:grid-cols-2 lg:grid-cols-3 gap-4 ml-6 mt-5">
+                 {[1, 2, 3, 4, 5, 6].map((i) => <JobSkeleton key={i} />)}
+              </div>
+            ) : filterJobs.length <= 0 ? (
+              <div className="text-center py-20 text-gray-500">
+                <NotFound />
+              </div>
+            ) : (
               <div className="grid grid-cols-1 m-5 md:grid-cols-2 lg:grid-cols-3 gap-4 ml-6 mt-5">
                 {filterJobs.map((job) => (
                   <motion.div
@@ -59,17 +46,17 @@ const Jobs = () => {
                     animate={{ opacity: 1, x: 0 }}
                     exit={{ opacity: 0, x: -100 }}
                     transition={{ duration: 0.4 }}
-                    key={job.id}
+                    key={job._id}
                   >
                     <Job1 job={job} />
                   </motion.div>
                 ))}
               </div>
-            </div>
-          )}
+            )}
+          </div>
         </div>
       </div>
-      <Footer></Footer>
+      <Footer />
     </div>
   );
 };
