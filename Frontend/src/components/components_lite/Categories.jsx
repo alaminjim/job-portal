@@ -46,26 +46,26 @@ const Categories = () => {
 
   return (
     <div className="px-4 sm:px-6 lg:px-8 mt-10">
-      <div className="text-center mb-6">
-        <h1 className="text-3xl font-bold text-purple-600">Categories</h1>
-        <p className="text-gray-400 mt-2">Explore our extensive job market.</p>
+      <div className="text-center mb-10">
+        <h1 className="text-4xl font-extrabold text-aura tracking-tight">Categories</h1>
+        <p className="text-gray-500 mt-2 font-medium">Explore trending career paths and industries.</p>
       </div>
 
       <Carousel
-        className="w-full max-w-5xl mx-auto relative px-4 sm:px-6 lg:px-8"
+        className="w-full max-w-5xl mx-auto relative px-4"
         loop
       >
-        <CarouselContent className="flex gap-3">
+        <CarouselContent className="flex gap-4">
           {categories.map((category, index) => (
             <CarouselItem
               key={index}
               onClick={() => searchjobHandler(category.name)}
-              className="flex-none px-5 py-3 bg-gradient-to-r from-purple-300 via-purple-400 to-indigo-400 text-white rounded-lg shadow-md hover:shadow-lg hover:scale-105 transition cursor-pointer flex items-center gap-2"
+              className="flex-none px-6 py-4 aura-gradient text-white rounded-2xl shadow-lg hover:shadow-xl hover:scale-105 active:scale-95 transition-all duration-300 cursor-pointer flex items-center gap-3 border border-white/20"
             >
-              <div className="flex items-center justify-center text-white">
+              <div className="flex items-center justify-center text-white drop-shadow-md">
                 {category.icon}
               </div>
-              <p className="text-sm font-medium whitespace-nowrap">
+              <p className="text-base font-semibold whitespace-nowrap">
                 {category.name}
               </p>
             </CarouselItem>

@@ -50,14 +50,14 @@ const Navbar = () => {
   return (
     <>
       <nav
-        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 backdrop-blur-md ${
-          scrolled ? "bg-white/90 shadow-lg" : "bg-white/70"
+        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
+          scrolled ? "glass-navbar" : "bg-transparent"
         }`}
       >
         <div className="max-w-7xl mx-auto px-6 py-3 flex items-center justify-between">
           {/* Logo */}
           <Link to="/" className="flex-shrink-0">
-            <h1 className="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-purple-600 to-orange-500">
+            <h1 className="text-2xl font-extrabold text-aura tracking-tight">
               JobPortal
             </h1>
           </Link>

@@ -16,13 +16,10 @@ import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
 const AdminJobsTable = () => {
-  const { companies, searchCompanyByText } = useSelector(
-    (store) => store.company
-  );
   const { allAdminJobs, searchJobByText } = useSelector((store) => store.job);
   const navigate = useNavigate();
 
-  const [filterJobs, setFilterJobs] = useState(allAdminJobs);
+  const [filterJobs, setFilterJobs] = useState(allAdminJobs || []);
 
   useEffect(() => {
     const filteredJobs =
@@ -50,7 +47,7 @@ const AdminJobsTable = () => {
   }
 
   return (
-    <div>
+    <div className="glass-card rounded-2xl overflow-hidden shadow-xl border-white/20 mt-5">
       <Table>
         <TableCaption className="pb-3">Your recent Posted Jobs</TableCaption>
         <TableHeader>
@@ -78,8 +75,8 @@ const AdminJobsTable = () => {
                     </PopoverTrigger>
                     <PopoverContent className="w-32">
                       <div
-                        onClick={() => navigate(`/admin/companies/${job._id}`)}
-                        className="flex items-center gap-2 w-fit cursor-pointer mb-1"
+                        onClick={() => navigate(`/admin/jobs/${job._id}`)}
+                        className="flex items-center gap-2 w-fit cursor-pointer mb-1 hover:text-purple-600 transition"
                       >
                         <Edit2 className="w-4" />
                         <span>Edit</span>

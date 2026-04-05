@@ -7,9 +7,10 @@ const JobCards = ({ job }) => {
   const navigate = useNavigate();
 
   return (
-    <div
+    <motion.div
+      whileHover={{ y: -5 }}
       onClick={() => navigate(`/description/${job._id}`)}
-      className="p-5 m-5 rounded-md shadow-lg bg-white border border-gray-200 cursor-pointer hover:shadow-2xl transition-all duration-200"
+      className="p-6 rounded-2xl glass-card cursor-pointer transition-all duration-300"
     >
       {/* Company / Name */}
       <div className="flex items-center gap-3 my-3">
@@ -55,7 +56,7 @@ const JobCards = ({ job }) => {
           </Badge>
         )}
       </div>
-    </div>
+    </motion.div>
   );
 };
 

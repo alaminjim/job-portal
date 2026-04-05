@@ -42,8 +42,8 @@ const ApplicantsTable = () => {
   }
 
   return (
-    <div className="overflow-x-auto w-full rounded-lg shadow-md border border-gray-200">
-      <Table className="min-w-full divide-y divide-gray-200">
+    <div className="glass-card rounded-2xl overflow-hidden shadow-xl border-white/20 mt-8">
+      <Table className="min-w-full">
         <TableCaption className="text-center text-gray-600 py-2">
           Recently Applied Users
         </TableCaption>

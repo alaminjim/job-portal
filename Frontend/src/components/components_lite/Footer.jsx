@@ -3,12 +3,12 @@ import { FaGithub, FaTwitter, FaLinkedin } from "react-icons/fa";
 
 const Footer = () => {
   return (
-    <footer className="bg-white text-gray-700 mt-12 border-t border-gray-200">
-      <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-10 py-12 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
+    <footer className="bg-gray-50/50 backdrop-blur-md text-gray-700 mt-12 border-t border-gray-100">
+      <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-10 py-16 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12">
         {/* Branding */}
         <div className="flex flex-col gap-4">
           <Link to="/" className="flex-shrink-0">
-            <h1 className="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-purple-500 to-indigo-500">
+            <h1 className="text-3xl font-extrabold text-aura tracking-tighter">
               JobPortal
             </h1>
           </Link>

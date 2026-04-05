@@ -21,11 +21,10 @@ const Job1 = ({ job }) => {
   return (
     <motion.div
       whileHover={{
-        scale: 1.03,
-        boxShadow: "0 8px 25px rgba(106, 56, 194, 0.25)",
+        y: -5,
       }}
       transition={{ duration: 0.3 }}
-      className="p-6 rounded-xl shadow-lg bg-white border border-gray-200 hover:border-purple-400 cursor-pointer flex flex-col justify-between h-[380px]"
+      className="p-6 rounded-2xl glass-card cursor-pointer flex flex-col justify-between h-[400px] transition-all duration-300"
     >
       {/* Top row - Time + Bookmark */}
       <div className="flex items-center justify-between">
