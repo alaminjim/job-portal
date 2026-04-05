@@ -3,7 +3,7 @@ import cookieParser from "cookie-parser";
 import cors from "cors";
 import dotenv from "dotenv";
 import mongoose from "mongoose";
-import connectDB from "./utils/db.js";
+import connectDB, { connectionError } from "./utils/db.js";
 import userRoute from "./routes/user.route.js";
 import companyRoute from "./routes/company.route.js";
 import jobRoute from "./routes/job.route.js";
@@ -49,7 +49,7 @@ app.use(cors(corsOptions));
 app.use((req, res, next) => {
   if (mongoose.connection.readyState !== 1) {
     return res.status(503).json({
-      message: "Database connection not ready. Check Atlas IP whitelist.",
+      message: `Database connection not ready. Error: ${connectionError || "Check Atlas IP whitelist or URI"}`,
       success: false,
     });
   }
