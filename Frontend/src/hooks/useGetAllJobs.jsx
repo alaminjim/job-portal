@@ -13,7 +13,7 @@ const useGetAllJobs = () => {
     const fetchAllJobs = async () => {
       const token = localStorage.getItem("token");
       if (!token) {
-        setError("You must be logged in to fetch jobs.");
+        console.log("User not logged in, skipping job fetch.");
         return;
       }
 
