@@ -1,3 +1,4 @@
+import { setSearchedQuery } from "@/redux/jobSlice";
 import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover";
@@ -56,7 +57,11 @@ const Navbar = () => {
       >
         <div className="max-w-7xl mx-auto px-6 py-3 flex items-center justify-between">
           {/* Logo */}
-          <Link to="/" className="flex-shrink-0">
+          <Link
+            to="/"
+            onClick={() => dispatch(setSearchedQuery(""))}
+            className="flex-shrink-0"
+          >
             <h1 className="text-2xl font-extrabold text-aura tracking-tight">
               JobPortal
             </h1>
@@ -70,6 +75,7 @@ const Navbar = () => {
                 <li key={item.to} className="relative group">
                   <Link
                     to={item.to}
+                    onClick={() => dispatch(setSearchedQuery(""))}
                     className="hover:text-transparent bg-clip-text bg-gradient-to-r from-purple-500 to-orange-400 transition duration-300"
                   >
                     {item.label}

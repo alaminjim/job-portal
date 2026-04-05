@@ -7,8 +7,11 @@ import LatestJobs from "./LatestJobs";
 import Footer from "./Footer";
 import useGetAllJobs from "@/hooks/useGetAllJobs";
 import { useNavigate } from "react-router-dom";
+import { setSearchedQuery } from "@/redux/jobSlice";
+import { useDispatch } from "react-redux";
 
 const Home = () => {
+  const dispatch = useDispatch();
   const { loading, error } = useGetAllJobs(); // Trigger data fetch
   const jobs = useSelector((state) => state.jobs.allJobs); // Access Redux state
 
@@ -17,6 +20,7 @@ const Home = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
+    dispatch(setSearchedQuery(""));
     if (user?.role === "Recruiter") {
       navigate("/admin/companies");
     }
