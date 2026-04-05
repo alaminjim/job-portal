@@ -31,6 +31,13 @@ export const postJob = async (req, res) => {
         success: false,
       });
     }
+    if (isNaN(Number(experience)) || isNaN(Number(position))) {
+      return res.status(400).json({
+        message: "Experience and Position must be valid numbers (e.g., 2, 5, 10)",
+        success: false,
+      });
+    }
+
     const job = await Job.create({
       title,
       description,
