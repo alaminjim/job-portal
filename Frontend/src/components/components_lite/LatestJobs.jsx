@@ -26,22 +26,19 @@ const LatestJobs = () => {
         transition={{ duration: 0.8, ease: "easeOut" }}
         className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 my-8"
       >
-        {allJobs.length === 0 ? (
+        {allJobs === null ? (
+          /* Show skeletons while initial loading (null) */
+          [1, 2, 3, 4, 5, 6].map((i) => <JobSkeleton key={i} />)
+        ) : allJobs.length === 0 ? (
+          /* Show NotFound only after loaded and actually empty */
           <span className="col-span-full text-center text-gray-500 font-medium">
-            <NotFound></NotFound>
+            No Jobs Available
           </span>
         ) : (
           allJobs.slice(0, 6).map((job) =>
             job?._id ? (
               <JobCards key={job._id} job={job} />
-            ) : (
-              <span
-                key={Math.random()}
-                className="text-gray-400 text-sm italic text-center"
-              >
-                Invalid Job Data
-              </span>
-            )
+            ) : null
           )
         )}
       </motion.div>

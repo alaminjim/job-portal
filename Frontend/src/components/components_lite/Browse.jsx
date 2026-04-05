@@ -9,10 +9,12 @@ import Footer from "./Footer";
 import JobSkeleton from "./JobSkeleton";
 
 const Browse = () => {
-  const { loading } = useGetAllJobs();
   const { allJobs } = useSelector((store) => store.job);
+  const loading = allJobs === null;
   const dispatch = useDispatch();
   
+  useGetAllJobs(); // This hook updates allJobs in Redux
+
   useEffect(() => {
     return () => {
       dispatch(setSearchedQuery(""));
