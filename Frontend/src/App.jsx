@@ -7,6 +7,7 @@ import Jobs from "@/components/components_lite/Jobs";
 import Browse from "@/components/components_lite/Browse";
 import Profile from "@/components/components_lite/Profile";
 import Description from "@/components/components_lite/Description";
+import UserApplications from "@/components/components_lite/UserApplications";
 
 // Admin Components
 import Companies from "@/components/admincomponent/Companies";
