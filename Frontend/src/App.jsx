@@ -32,6 +32,7 @@ const appRouter = createBrowserRouter([
   { path: "/Profile", element: <Profile /> },
   { path: "/Jobs", element: <Jobs /> },
   { path: "/Browse", element: <Browse /> },
+  { path: "/my-applications", element: <UserApplications /> },
 
   // Admin Routes (Protected)
   {
