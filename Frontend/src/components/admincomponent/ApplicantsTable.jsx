@@ -20,10 +20,16 @@ const ApplicantsTable = () => {
 
   const statusHandler = async (status, id) => {
     try {
+      const token = localStorage.getItem("token");
       axios.defaults.withCredentials = true;
       const res = await axios.post(
         `${import.meta.env.VITE_APPLICATION_API_ENDPOINT}/status/${id}/update`,
-        { status }
+        { status },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
       );
       if (res.data.success) {
         toast.success(res.data.message);
