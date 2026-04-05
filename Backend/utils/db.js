@@ -8,10 +8,12 @@ export let connectionError = null;
 // Connect to MongoDB
 const connectDB = async () => {
   try {
-    // Set global buffering to false to prevent hanging queries on connection fail
+    // Trim and remove any accidental quotes from URI
+    const uri = process.env.MONGO_URI?.trim().replace(/^["']|["']$/g, "");
+    
     mongoose.set("bufferCommands", false);
     
-    await mongoose.connect(process.env.MONGO_URI, {
+    await mongoose.connect(uri, {
       serverSelectionTimeoutMS: 10000,
     });
     console.log("MongoDB Connected...");
