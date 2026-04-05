@@ -3,7 +3,7 @@ import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover";
 import { Avatar, AvatarImage } from "../ui/avatar";
-import { LogOut, User2, Menu, X } from "lucide-react";
+import { LogOut, User2, Menu, X, Briefcase } from "lucide-react";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "sonner";
 import { setUser } from "@/redux/authSlice";
@@ -47,7 +47,6 @@ const Navbar = () => {
           { label: "Home", to: "/" },
           { label: "Browse", to: "/Browse" },
           { label: "Jobs", to: "/Jobs" },
-          { label: "My Applications", to: "/my-applications" },
         ];
 
   return (
@@ -128,18 +127,26 @@ const Navbar = () => {
                   </div>
                   <div className="flex flex-col gap-2">
                     {user.role === "Student" && (
-                      <Link
-                        to="/Profile"
-                        className="flex items-center gap-2 px-3 py-2 rounded-md hover:bg-purple-50 text-gray-700 transition"
-                      >
-                        <User2 /> Profile
-                      </Link>
+                      <>
+                        <Link
+                          to="/Profile"
+                          className="flex items-center gap-2 px-3 py-2 rounded-md hover:bg-purple-50 text-gray-700 transition"
+                        >
+                          <User2 className="w-5 h-5" /> Profile
+                        </Link>
+                        <Link
+                          to="/my-applications"
+                          className="flex items-center gap-2 px-3 py-2 rounded-md hover:bg-purple-50 text-gray-700 transition"
+                        >
+                          <Briefcase className="w-5 h-5" /> My Applications
+                        </Link>
+                      </>
                     )}
                     <button
                       onClick={logoutHandler}
                       className="flex items-center gap-2 px-3 py-2 rounded-md hover:bg-red-50 text-gray-700 transition"
                     >
-                      <LogOut /> Logout
+                      <LogOut className="w-5 h-5" /> Logout
                     </button>
                   </div>
                 </PopoverContent>
@@ -189,13 +196,22 @@ const Navbar = () => {
           ) : (
             <div className="flex flex-col gap-2 mt-3">
               {user.role === "Student" && (
-                <Link
-                  to="/Profile"
-                  className="flex items-center gap-2 px-3 py-2 rounded-md hover:bg-purple-50 text-gray-700 transition"
-                  onClick={() => setMobileOpen(false)}
-                >
-                  <User2 /> Profile
-                </Link>
+                <>
+                  <Link
+                    to="/Profile"
+                    className="flex items-center gap-2 px-3 py-2 rounded-md hover:bg-purple-50 text-gray-700 transition"
+                    onClick={() => setMobileOpen(false)}
+                  >
+                    <User2 className="w-5 h-5" /> Profile
+                  </Link>
+                  <Link
+                    to="/my-applications"
+                    className="flex items-center gap-2 px-3 py-2 rounded-md hover:bg-purple-50 text-gray-700 transition"
+                    onClick={() => setMobileOpen(false)}
+                  >
+                    <Briefcase className="w-5 h-5" /> My Applications
+                  </Link>
+                </>
               )}
               <button
                 onClick={() => {
@@ -204,7 +220,7 @@ const Navbar = () => {
                 }}
                 className="flex items-center gap-2 px-3 py-2 rounded-md hover:bg-red-50 text-gray-700 transition"
               >
-                <LogOut /> Logout
+                <LogOut className="w-5 h-5" /> Logout
               </button>
             </div>
           )}
