@@ -56,9 +56,10 @@ export const register = async (req, res) => {
     });
   } catch (error) {
     console.error(error);
-    return res
-      .status(500)
-      .json({ message: "Server error registering user", success: false });
+    return res.status(500).json({
+      message: error.message || "Server error registering user",
+      success: false,
+    });
   }
 };
 

@@ -11,25 +11,16 @@ const useGetAllJobs = () => {
 
   useEffect(() => {
     const fetchAllJobs = async () => {
-      const token = localStorage.getItem("token");
-      if (!token) {
-        console.log("User not logged in, skipping job fetch.");
-        return;
-      }
-
       setLoading(true);
       setError(null);
+      const headers = token ? { Authorization: `Bearer ${token}` } : {};
 
       try {
         const res = await axios.get(
           `${
             import.meta.env.VITE_JOB_API_ENDPOINT
           }/get?keyword=${searchedQuery}`,
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          }
+          { headers }
         );
 
         if (res.data.success) {

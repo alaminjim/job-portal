@@ -12,7 +12,11 @@ import path from "path";
 dotenv.config({});
 const app = express();
 
-await connectDB();
+try {
+  await connectDB();
+} catch (error) {
+  console.error("Database initialization failed:", error.message);
+}
 
 // middleware
 app.use(express.json());
@@ -26,8 +30,9 @@ const allowedOrigins = [
 
 const corsOptions = {
   origin: (origin, callback) => {
-    // allow requests with no origin (like mobile apps or curl requests)
-    if (!origin || allowedOrigins.includes(origin)) {
+    // Strip trailing slash if any
+    const cleanOrigin = origin ? origin.replace(/\/$/, "") : null;
+    if (!cleanOrigin || allowedOrigins.includes(cleanOrigin)) {
       callback(null, true);
     } else {
       callback(new Error("Not allowed by CORS"));

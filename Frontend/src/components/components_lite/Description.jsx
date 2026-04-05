@@ -62,22 +62,21 @@ const Description = () => {
       setLoading(true);
       setError(null);
       try {
-        if (!token) throw new Error("You must be logged in to view this job.");
-
+        const headers = token ? { Authorization: `Bearer ${token}` } : {};
         const res = await axios.get(
           `${import.meta.env.VITE_JOB_API_ENDPOINT}/get/${jobId}`,
-          {
-            headers: { Authorization: `Bearer ${token}` },
-          }
+          { headers }
         );
 
-        if (res.data.status) {
+        if (res.data.success) {
           dispatch(setSingleJob(res.data.job));
-          setIsApplied(
-            res.data.job.applications.some(
-              (application) => application.applicant === user?._id
-            )
-          );
+          if (user?._id) {
+            setIsApplied(
+              res.data.job.applications.some(
+                (application) => application.applicant === user?._id
+              )
+            );
+          }
         } else {
           setError("Failed to fetch job.");
         }
