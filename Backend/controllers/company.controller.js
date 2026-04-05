@@ -28,7 +28,11 @@ export const registerCompany = async (req, res) => {
       success: true,
     });
   } catch (error) {
-    console.log(error);
+    console.error(error);
+    return res.status(500).json({
+      message: "Server error registering company",
+      success: false,
+    });
   }
 };
 
@@ -36,15 +40,16 @@ export const getAllCompanies = async (req, res) => {
   try {
     const userId = req.id; // loggedin user id
     const companies = await Company.find({ userId });
-    if (!companies) {
-      return res.status(404).json({ message: "No companies found" });
-    }
     return res.status(200).json({
       companies,
       success: true,
     });
   } catch (error) {
     console.error(error);
+    return res.status(500).json({
+      message: "Server error fetching companies",
+      success: false,
+    });
   }
 };
 
@@ -54,34 +59,59 @@ export const getCompanyById = async (req, res) => {
     const companyId = req.params.id;
     const company = await Company.findById(companyId);
     if (!company) {
-      return res.status(404).json({ message: "Company not found" });
+      return res.status(404).json({ message: "Company not found", success: false });
     }
     return res.status(200).json({ company, success: true });
   } catch (error) {
     console.error(error);
+    return res.status(500).json({
+      message: "Server error fetching company details",
+      success: false,
+    });
   }
 };
 
 //update company details
 export const updateCompany = async (req, res) => {
   try {
+    const company = await Company.findById(req.params.id);
+    if (!company) {
+      return res.status(404).json({ message: "Company not found", success: false });
+    }
+
+    if (company.userId.toString() !== req.id) {
+      return res.status(403).json({
+        message: "You don't have permission to update this company",
+        success: false,
+      });
+    }
+
     const { name, description, website, location } = req.body;
     const file = req.file;
-    //cloudinary
-    const fileUri = getDataUri(file);
-    const cloudResponse = await cloudinary.uploader.upload(fileUri.content);
-    const logo = cloudResponse.secure_url;
+    let logo = company.logo;
+
+    if (file) {
+      const fileUri = getDataUri(file);
+      const cloudResponse = await cloudinary.uploader.upload(fileUri.content);
+      logo = cloudResponse.secure_url;
+    }
 
     const updateData = { name, description, website, location, logo };
 
-    const company = await Company.findByIdAndUpdate(req.params.id, updateData, {
+    const updatedCompany = await Company.findByIdAndUpdate(req.params.id, updateData, {
       new: true,
     });
-    if (!company) {
-      return res.status(404).json({ message: "Company not found" });
-    }
-    return res.status(200).json({ message: "Company updated" });
+
+    return res.status(200).json({
+      message: "Company updated successfully",
+      company: updatedCompany,
+      success: true,
+    });
   } catch (error) {
     console.error(error);
+    return res.status(500).json({
+      message: "Server error updating company",
+      success: false,
+    });
   }
 };

@@ -29,7 +29,7 @@ const useGetAllAdminJobs = () => {
           }
         );
 
-        if (res.data.status) {
+        if (res.data.success) {
           dispatch(setAllAdminJobs(res.data.jobs));
         } else {
           setError(res.data.message || "Failed to fetch jobs.");

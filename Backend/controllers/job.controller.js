@@ -46,11 +46,13 @@ export const postJob = async (req, res) => {
     res.status(201).json({
       message: "Job posted successfully.",
       job,
-      status: true,
+      success: true,
     });
   } catch (error) {
     console.error(error);
-    return res.status(500).json({ message: "Server Error", status: false });
+    return res
+      .status(500)
+      .json({ message: "Server error posting job", success: false });
   }
 };
 
@@ -70,13 +72,15 @@ export const getAllJobs = async (req, res) => {
       })
       .sort({ createdAt: -1 });
 
-    if (!jobs) {
-      return res.status(404).json({ message: "No jobs found", status: false });
+    if (!jobs || jobs.length === 0) {
+      return res.status(404).json({ message: "No jobs found", success: false });
     }
-    return res.status(200).json({ jobs, status: true });
+    return res.status(200).json({ jobs, success: true });
   } catch (error) {
     console.error(error);
-    return res.status(500).json({ message: "Server Error", status: false });
+    return res
+      .status(500)
+      .json({ message: "Server error fetching jobs", success: false });
   }
 };
 
@@ -88,12 +92,14 @@ export const getJobById = async (req, res) => {
       path: "applications",
     });
     if (!job) {
-      return res.status(404).json({ message: "Job not found", status: false });
+      return res.status(404).json({ message: "Job not found", success: false });
     }
-    return res.status(200).json({ job, status: true });
+    return res.status(200).json({ job, success: true });
   } catch (error) {
     console.error(error);
-    return res.status(500).json({ message: "Server Error", status: false });
+    return res
+      .status(500)
+      .json({ message: "Server error fetching job details", success: false });
   }
 };
 
@@ -106,12 +112,14 @@ export const getAdminJobs = async (req, res) => {
       path: "company",
       sort: { createdAt: -1 },
     });
-    if (!jobs) {
-      return res.status(404).json({ message: "No jobs found", status: false });
+    if (!jobs || jobs.length === 0) {
+      return res.status(404).json({ message: "No jobs found", success: false });
     }
-    return res.status(200).json({ jobs, status: true });
+    return res.status(200).json({ jobs, success: true });
   } catch (error) {
     console.error(error);
-    return res.status(500).json({ message: "Server Error", status: false });
+    return res
+      .status(500)
+      .json({ message: "Server error fetching admin jobs", success: false });
   }
 };

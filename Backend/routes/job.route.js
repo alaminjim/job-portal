@@ -1,6 +1,7 @@
 import express from "express";
 
 import authenticateToken from "../middleware/isAuthenticated.js";
+import isRecruiter from "../middleware/isRecruiter.js";
 import {
   getAdminJobs,
   getAllJobs,
@@ -10,8 +11,8 @@ import {
 
 const router = express.Router();
 
-router.route("/post").post(authenticateToken, postJob);
+router.route("/post").post(authenticateToken, isRecruiter, postJob);
 router.route("/get").get(authenticateToken, getAllJobs);
-router.route("/getadminjobs").get(authenticateToken, getAdminJobs);
+router.route("/getadminjobs").get(authenticateToken, isRecruiter, getAdminJobs);
 router.route("/get/:id").get(authenticateToken, getJobById);
 export default router;

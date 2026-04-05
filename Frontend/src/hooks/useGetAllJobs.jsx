@@ -32,7 +32,7 @@ const useGetAllJobs = () => {
           }
         );
 
-        if (res.data.status) {
+        if (res.data.success) {
           dispatch(setAllJobs(res.data.jobs));
         } else {
           setError(res.data.message || "Failed to fetch jobs.");

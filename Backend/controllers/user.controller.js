@@ -91,9 +91,13 @@ export const login = async (req, res) => {
         success: false,
       });
 
-    const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, {
-      expiresIn: "365d",
-    });
+    const token = jwt.sign(
+      { userId: user._id, role: user.role },
+      process.env.JWT_SECRET,
+      {
+        expiresIn: "365d",
+      }
+    );
 
     const sanitizedUser = {
       _id: user._id,
@@ -153,13 +157,15 @@ export const updateProfile = async (req, res) => {
     if (email) user.email = email;
     if (phoneNumber) user.phoneNumber = phoneNumber;
     if (bio) user.profile.bio = bio;
-    if (skills) user.profile.skills = skills.split(",");
+    if (skills) {
+      user.profile.skills = Array.isArray(skills) ? skills : skills.split(",").map(skill => skill.trim());
+    }
 
     if (file) {
       const fileUri = getDataUri(file);
       const cloudResponse = await cloudinary.uploader.upload(fileUri.content);
       user.profile.resume = cloudResponse.secure_url;
-      user.profile.resumeOriginalName = file.originalname;
+      user.profile.resumeOriginalname = file.originalname;
     }
 
     await user.save();
