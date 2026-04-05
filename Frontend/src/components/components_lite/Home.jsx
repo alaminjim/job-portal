@@ -27,9 +27,8 @@ const Home = () => {
       <Navbar />
       <Header />
       <Categories />
-      {loading && <p>Loading jobs...</p>}
-      {error && <p>Error: {error}</p>}
-      {!loading && !error && <LatestJobs jobs={jobs} />}
+      {/* LatestJobs now handles its own internal skeleton state */}
+      <LatestJobs loading={loading} />
       <Footer />
     </div>
   );

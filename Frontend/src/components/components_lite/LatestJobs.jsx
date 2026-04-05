@@ -26,20 +26,21 @@ const LatestJobs = () => {
         transition={{ duration: 0.8, ease: "easeOut" }}
         className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 my-8"
       >
-        {allJobs === null ? (
-          /* Show skeletons while initial loading (null) */
+        {(!allJobs || allJobs.length === 0) && (allJobs === null) ? (
+          /* Show skeletons while initial loading */
           [1, 2, 3, 4, 5, 6].map((i) => <JobSkeleton key={i} />)
-        ) : allJobs.length === 0 ? (
-          /* Show NotFound only after loaded and actually empty */
-          <span className="col-span-full text-center text-gray-500 font-medium">
-            No Jobs Available
-          </span>
-        ) : (
+        ) : allJobs && allJobs.length > 0 ? (
           allJobs.slice(0, 6).map((job) =>
             job?._id ? (
               <JobCards key={job._id} job={job} />
             ) : null
           )
+        ) : (
+          /* Only show 'No Jobs' if we've successfully loaded an empty array */
+          <div className="col-span-full text-center py-10 opacity-60">
+             <p className="text-xl font-medium">No fresh jobs at the moment.</p>
+             <p className="text-sm">Check back later for new opportunities!</p>
+          </div>
         )}
       </motion.div>
     </div>

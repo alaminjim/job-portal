@@ -8,6 +8,7 @@ import Footer from "./Footer";
 import NotFound from "../Shared/NotFound";
 
 import JobSkeleton from "./JobSkeleton";
+import AuraLoader from "../Shared/AuraLoader";
 
 const Jobs = () => {
   const { allJobs, searchedQuery } = useSelector((store) => store.job);
@@ -46,9 +47,7 @@ const Jobs = () => {
           </div>
           <div className="flex-1 h-[88vh] overflow-y-auto pb-5">
             {loading ? (
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-                {[1, 2, 3, 4, 5, 6].map((i) => <JobSkeleton key={i} />)}
-              </div>
+              <AuraLoader />
             ) : filterJobs.length <= 0 ? (
               <div className="flex flex-col items-center justify-center h-full text-gray-500">
                 <span className="text-lg">No jobs matched your filter.</span>
