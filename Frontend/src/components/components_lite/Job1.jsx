@@ -5,6 +5,7 @@ import { Button } from "../ui/button";
 import { Avatar, AvatarImage } from "../ui/avatar";
 import { Badge } from "../ui/badge";
 import { Bookmark, BookMarked } from "lucide-react";
+import { useDispatch, useSelector } from "react-redux";
 import { motion } from "framer-motion";
 
 const Job1 = ({ job }) => {
