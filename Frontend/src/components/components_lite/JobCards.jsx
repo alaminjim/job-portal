@@ -1,17 +1,32 @@
 import { Avatar, AvatarImage } from "../ui/avatar";
 import { Badge } from "../ui/badge";
 import { useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
 import { motion } from "framer-motion";
 
 const JobCards = ({ job }) => {
   const navigate = useNavigate();
+  const { user } = useSelector((store) => store.auth);
+
+  const isApplied =
+    job?.applications?.some(
+      (application) =>
+        application?.applicant === user?._id || application === user?._id
+    ) || false;
 
   return (
     <motion.div
       whileHover={{ y: -5 }}
       onClick={() => navigate(`/description/${job._id}`)}
-      className="p-6 rounded-2xl glass-card cursor-pointer transition-all duration-300"
+      className="p-6 rounded-2xl glass-card cursor-pointer transition-all duration-300 relative overflow-hidden"
     >
+      {isApplied && (
+        <div className="absolute top-0 right-0 p-2">
+          <Badge className="bg-green-100 text-green-600 border-none font-bold text-[10px] uppercase">
+            Applied
+          </Badge>
+        </div>
+      )}
       {/* Company / Name */}
       <div className="flex items-center gap-3 my-3">
         <Avatar className="w-12 h-12 border border-gray-200 rounded-full">

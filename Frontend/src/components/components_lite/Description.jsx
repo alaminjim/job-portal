@@ -22,7 +22,7 @@ const Description = () => {
   const navigate = useNavigate();
 
   const isIntiallyApplied =
-    singleJob?.application?.some(
+    singleJob?.applications?.some(
       (application) => application.applicant === user?._id
     ) || false;
   const [isApplied, setIsApplied] = useState(isIntiallyApplied);
@@ -46,11 +46,14 @@ const Description = () => {
 
       if (res.data.success) {
         setIsApplied(true);
-        const updateSingleJob = {
+        const updatedSingleJob = {
           ...singleJob,
-          applications: [...singleJob.applications, { applicant: user?._id }],
+          applications: [
+            ...(singleJob?.applications || []),
+            { applicant: user?._id },
+          ],
         };
-        dispatch(setSingleJob(updateSingleJob));
+        dispatch(setSingleJob(updatedSingleJob));
         toast.success(res.data.message);
       }
     } catch (error) {

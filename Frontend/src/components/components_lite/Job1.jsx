@@ -9,7 +9,14 @@ import { motion } from "framer-motion";
 
 const Job1 = ({ job }) => {
   const navigate = useNavigate();
+  const { user } = useSelector((store) => store.auth);
   const [isBookmarked, setIsBookmarked] = useState(false);
+
+  const isApplied =
+    job?.applications?.some(
+      (application) =>
+        application?.applicant === user?._id || application === user?._id
+    ) || false;
 
   const daysAgoFunction = (mongodbTime) => {
     const createdAt = new Date(mongodbTime);
@@ -28,11 +35,18 @@ const Job1 = ({ job }) => {
     >
       {/* Top row - Time + Bookmark */}
       <div className="flex items-center justify-between">
-        <p className="text-sm text-gray-500">
-          {daysAgoFunction(job?.createdAt) === 0
-            ? "Today"
-            : `${daysAgoFunction(job?.createdAt)} days ago`}
-        </p>
+        <div className="flex flex-col">
+          <p className="text-sm text-gray-500">
+            {daysAgoFunction(job?.createdAt) === 0
+              ? "Today"
+              : `${daysAgoFunction(job?.createdAt)} days ago`}
+          </p>
+          {isApplied && (
+            <Badge className="w-fit mt-1 px-2 py-0 h-5 bg-green-100 text-green-600 border-none font-bold text-[10px] uppercase">
+              Applied
+            </Badge>
+          )}
+        </div>
         <Button
           variant="outline"
           className="rounded-full"
@@ -91,7 +105,7 @@ const Job1 = ({ job }) => {
           Details
         </Button>
         <Button className="bg-gradient-to-r from-purple-500 to-indigo-500 hover:opacity-90 text-white font-semibold">
-          Save For Later
+          {isApplied ? "Applied" : "Save For Later"}
         </Button>
       </div>
     </motion.div>
