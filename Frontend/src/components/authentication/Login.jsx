@@ -13,7 +13,7 @@ import { motion } from "framer-motion";
 import { GoogleLogin } from "@react-oauth/google";
 
 const Login = () => {
-  const [input, setInput] = useState({ email: "", password: "", role: "" });
+  const [input, setInput] = useState({ email: "", password: "", role: "Student" });
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { loading, user } = useSelector((store) => store.auth);
@@ -224,7 +224,7 @@ const Login = () => {
             <GoogleLogin
               onSuccess={googleAuthHandler}
               onError={() => toast.error("Google Login Failed")}
-              useOneTap
+              text="continue_with"
             />
           </motion.div>
 

@@ -15,7 +15,7 @@ const Register = () => {
     fullname: "",
     email: "",
     password: "",
-    role: "",
+    role: "Student",
     phoneNumber: "",
     file: "",
   });
@@ -240,7 +240,7 @@ const Register = () => {
           <GoogleLogin
             onSuccess={googleAuthHandler}
             onError={() => toast.error("Google Registration Failed")}
-            useOneTap
+            text="continue_with"
           />
         </div>
 

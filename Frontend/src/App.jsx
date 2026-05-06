@@ -1,4 +1,7 @@
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import { useEffect } from "react";
+import { useDispatch } from "react-redux";
+import { setLoading } from "@/redux/authSlice";
 
 // Lite Components
 
@@ -95,6 +98,13 @@ const appRouter = createBrowserRouter([
 ]);
 
 function App() {
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    // Reset loading state on app mount in case redux-persist saved it as true
+    dispatch(setLoading(false));
+  }, [dispatch]);
+
   return (
     <div>
       <RouterProvider router={appRouter} />
