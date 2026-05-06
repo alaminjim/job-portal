@@ -6,7 +6,7 @@ import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { toast } from "sonner";
 import { useDispatch, useSelector } from "react-redux";
-import { setLoading } from "@/redux/authSlice";
+import { setLoading, setUser } from "@/redux/authSlice";
 import { motion } from "framer-motion";
 import { useGoogleLogin } from "@react-oauth/google";
 
@@ -83,6 +83,7 @@ const Register = () => {
         if (res.data.success) {
           localStorage.setItem("token", res.data.token);
           localStorage.setItem("user", JSON.stringify(res.data.user));
+          dispatch(setUser(res.data.user));
           navigate("/");
           toast.success(res.data.message);
           window.location.reload(); 

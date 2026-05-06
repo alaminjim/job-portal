@@ -2,7 +2,7 @@ import { setSearchedQuery } from "@/redux/jobSlice";
 import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover";
-import { Avatar, AvatarImage } from "../ui/avatar";
+import { Avatar, AvatarImage, AvatarFallback } from "../ui/avatar";
 import { LogOut, User2, Menu, X, Briefcase } from "lucide-react";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "sonner";
@@ -103,20 +103,22 @@ const Navbar = () => {
             ) : (
               <Popover>
                 <PopoverTrigger asChild>
-                  <Avatar className="cursor-pointer border-2 border-gray-200 shadow-sm overflow-hidden">
+                  <Avatar className="cursor-pointer border-2 border-gray-200 shadow-sm overflow-hidden bg-purple-100 flex items-center justify-center text-purple-700 font-bold">
                     <AvatarImage
                       src={user?.profile?.profilePhoto}
                       alt={user.fullname}
                     />
+                    <AvatarFallback>{user.fullname?.charAt(0) || "U"}</AvatarFallback>
                   </Avatar>
                 </PopoverTrigger>
                 <PopoverContent className="w-72 rounded-lg shadow-lg p-4 bg-white border border-gray-200">
                   <div className="flex items-center gap-4 mb-4">
-                    <Avatar className="border-2 border-gray-200 shadow-sm overflow-hidden">
+                    <Avatar className="border-2 border-gray-200 shadow-sm overflow-hidden bg-purple-100 flex items-center justify-center text-purple-700 font-bold">
                       <AvatarImage
                         src={user?.profile?.profilePhoto}
                         alt={user.fullname}
                       />
+                      <AvatarFallback>{user.fullname?.charAt(0) || "U"}</AvatarFallback>
                     </Avatar>
                     <div>
                       <h3 className="font-medium">{user.fullname}</h3>
