@@ -10,6 +10,7 @@ import { toast } from "sonner";
 import { useDispatch, useSelector } from "react-redux";
 import { setLoading, setUser } from "@/redux/authSlice";
 import { motion } from "framer-motion";
+import { GoogleLogin } from "@react-oauth/google";
 
 const Login = () => {
   const [input, setInput] = useState({ email: "", password: "", role: "" });
@@ -29,6 +30,7 @@ const Login = () => {
         input,
         {
           headers: { "Content-Type": "application/json" },
+          timeout: 9000, // 9s — stops spinner if Vercel hangs
         }
       );
 
@@ -42,7 +44,46 @@ const Login = () => {
         toast.success(res.data.message);
       }
     } catch (error) {
-      toast.error(error.response?.data?.message || error.message);
+      if (error.code === "ECONNABORTED") {
+        toast.error("Server is taking too long. Please try again.");
+      } else {
+        toast.error(error.response?.data?.message || "An unexpected error occurred.");
+      }
+    } finally {
+      dispatch(setLoading(false));
+    }
+  };
+
+  const googleAuthHandler = async (credentialResponse) => {
+    if (!input.role) {
+      toast.error("Please select a role first (Student or Recruiter) before continuing with Google.");
+      return;
+    }
+
+    try {
+      dispatch(setLoading(true));
+      const res = await axios.post(
+        `${import.meta.env.VITE_USER_API_ENDPOINT}/google-auth`,
+        { idToken: credentialResponse.credential, role: input.role },
+        {
+          headers: { "Content-Type": "application/json" },
+          timeout: 9000,
+        }
+      );
+
+      if (res.data.success) {
+        localStorage.setItem("token", res.data.token);
+        localStorage.setItem("user", JSON.stringify(res.data.user));
+        dispatch(setUser(res.data.user));
+        navigate("/");
+        toast.success(res.data.message);
+      }
+    } catch (error) {
+      if (error.code === "ECONNABORTED") {
+        toast.error("Server is taking too long. Please try again.");
+      } else {
+        toast.error(error.response?.data?.message || "Google authentication failed.");
+      }
     } finally {
       dispatch(setLoading(false));
     }
@@ -165,6 +206,26 @@ const Login = () => {
                 Login
               </motion.button>
             )}
+          </motion.div>
+
+          {/* Google Auth Divider & Button */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.65 }}
+            className="flex flex-col items-center gap-4"
+          >
+            <div className="flex items-center w-full">
+              <div className="flex-grow border-t border-gray-300"></div>
+              <span className="px-3 text-sm text-gray-500">Or</span>
+              <div className="flex-grow border-t border-gray-300"></div>
+            </div>
+            
+            <GoogleLogin
+              onSuccess={googleAuthHandler}
+              onError={() => toast.error("Google Login Failed")}
+              useOneTap
+            />
           </motion.div>
 
           {/* Register Link */}

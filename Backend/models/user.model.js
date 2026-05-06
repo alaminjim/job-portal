@@ -13,12 +13,11 @@ const userSchema = new mongoose.Schema(
     },
     phoneNumber: {
       type: String,
-      required: true,
-      unique: true,
+      default: "",         // optional for Google OAuth users
     },
     password: {
       type: String,
-      required: true,
+      default: "",         // optional for Google OAuth users
     },
     role: {
       type: String,
@@ -26,23 +25,26 @@ const userSchema = new mongoose.Schema(
       default: "Student",
       required: true,
     },
+    // Google OAuth fields
+    googleId: {
+      type: String,
+      default: null,
+    },
+    isGoogleUser: {
+      type: Boolean,
+      default: false,
+    },
     profile: {
-      bio: {
-        type: String,
-      },
+      bio:   { type: String },
       skills: [{ type: String }],
-      resume: {
-        type: String, // URL to resume file
-      },
-      resumeOriginalname: {
-        type: String, // Original name of resume file
-      },
+      resume: { type: String },
+      resumeOriginalname: { type: String },
       company: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "Company",
       },
       profilePhoto: {
-        type: String, // URL to profile photo file
+        type: String,
         default: "",
       },
     },
