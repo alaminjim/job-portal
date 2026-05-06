@@ -8,7 +8,7 @@ import { toast } from "sonner";
 import { useDispatch, useSelector } from "react-redux";
 import { setLoading } from "@/redux/authSlice";
 import { motion } from "framer-motion";
-import { GoogleLogin } from "@react-oauth/google";
+import { useGoogleLogin } from "@react-oauth/google";
 
 const Register = () => {
   const [input, setInput] = useState({
@@ -67,42 +67,38 @@ const Register = () => {
     }
   };
 
-  const googleAuthHandler = async (credentialResponse) => {
-    if (!input.role) {
-      toast.error("Please select a role first (Student or Recruiter) before continuing with Google.");
-      return;
-    }
-
-    try {
-      dispatch(setLoading(true));
-      const res = await axios.post(
-        `${import.meta.env.VITE_USER_API_ENDPOINT}/google-auth`,
-        { idToken: credentialResponse.credential, role: input.role },
-        {
-          headers: { "Content-Type": "application/json" },
-          timeout: 9000,
+  const loginWithGoogle = useGoogleLogin({
+    onSuccess: async (tokenResponse) => {
+      if (!input.role) {
+        toast.error("Please select a role first (Student or Recruiter) before continuing with Google.");
+        return;
+      }
+      try {
+        dispatch(setLoading(true));
+        const res = await axios.post(
+          `${import.meta.env.VITE_USER_API_ENDPOINT}/google-auth`,
+          { token: tokenResponse.access_token, role: input.role },
+          { headers: { "Content-Type": "application/json" }, timeout: 9000 }
+        );
+        if (res.data.success) {
+          localStorage.setItem("token", res.data.token);
+          localStorage.setItem("user", JSON.stringify(res.data.user));
+          navigate("/");
+          toast.success(res.data.message);
+          window.location.reload(); 
         }
-      );
-
-      if (res.data.success) {
-        localStorage.setItem("token", res.data.token);
-        localStorage.setItem("user", JSON.stringify(res.data.user));
-        // We can optionally dispatch setUser if authSlice is updated, or just redirect to login
-        navigate("/");
-        toast.success(res.data.message);
-        // Refresh page to sync auth state or use setUser like in login
-        window.location.reload(); 
+      } catch (error) {
+        if (error.code === "ECONNABORTED") {
+          toast.error("Server is taking too long. Please try again.");
+        } else {
+          toast.error(error.response?.data?.message || "Google registration failed.");
+        }
+      } finally {
+        dispatch(setLoading(false));
       }
-    } catch (error) {
-      if (error.code === "ECONNABORTED") {
-        toast.error("Server is taking too long. Please try again.");
-      } else {
-        toast.error(error.response?.data?.message || "Google authentication failed.");
-      }
-    } finally {
-      dispatch(setLoading(false));
-    }
-  };
+    },
+    onError: () => toast.error("Google Registration Failed"),
+  });
 
   useEffect(() => {
     if (user) navigate("/");
@@ -237,11 +233,14 @@ const Register = () => {
             <div className="flex-grow border-t border-gray-300"></div>
           </div>
           
-          <GoogleLogin
-            onSuccess={googleAuthHandler}
-            onError={() => toast.error("Google Registration Failed")}
-            text="continue_with"
-          />
+          <button
+            type="button"
+            onClick={() => loginWithGoogle()}
+            className="flex items-center justify-center gap-3 w-full py-2.5 border border-gray-300 rounded-full shadow-sm hover:bg-gray-50 transition"
+          >
+            <img src="https://www.svgrepo.com/show/475656/google-color.svg" alt="Google" className="w-5 h-5" />
+            <span className="text-gray-700 font-medium">Continue with Google</span>
+          </button>
         </div>
 
         {/* Login link */}

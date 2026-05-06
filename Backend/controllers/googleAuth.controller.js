@@ -1,6 +1,7 @@
 import { OAuth2Client } from "google-auth-library";
 import { User } from "../models/user.model.js";
 import jwt from "jsonwebtoken";
+import axios from "axios";
 
 const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
 
@@ -15,9 +16,12 @@ const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
  */
 export const googleAuth = async (req, res) => {
   try {
-    const { idToken, role } = req.body;
+    const { token: clientToken, role } = req.body;
 
-    if (!idToken || !role) {
+    // For backwards compatibility, check if they sent idToken instead of token
+    const token = clientToken || req.body.idToken;
+
+    if (!token || !role) {
       return res
         .status(400)
         .json({ message: "Google token and role are required", success: false });
@@ -29,21 +33,39 @@ export const googleAuth = async (req, res) => {
         .json({ message: "Invalid role selected", success: false });
     }
 
-    // ── 1. Verify the Google ID token ──────────────────────────────────────
-    let payload;
+    // ── 1. Verify the Google token ──────────────────────────────────────
+    let googleId, email, name, picture;
     try {
-      const ticket = await client.verifyIdToken({
-        idToken,
-        audience: process.env.GOOGLE_CLIENT_ID,
-      });
-      payload = ticket.getPayload();
-    } catch {
+      if (token.length > 500) {
+        // It's an ID Token
+        const ticket = await client.verifyIdToken({
+          idToken: token,
+          audience: process.env.GOOGLE_CLIENT_ID,
+        });
+        const payload = ticket.getPayload();
+        googleId = payload.sub;
+        email = payload.email;
+        name = payload.name;
+        picture = payload.picture;
+      } else {
+        // It's an Access Token
+        const response = await axios.get(
+          "https://www.googleapis.com/oauth2/v3/userinfo",
+          {
+            headers: { Authorization: `Bearer ${token}` },
+          }
+        );
+        googleId = response.data.sub;
+        email = response.data.email;
+        name = response.data.name;
+        picture = response.data.picture;
+      }
+    } catch (err) {
+      console.error("Token verification failed:", err.message);
       return res
         .status(401)
         .json({ message: "Invalid Google token", success: false });
     }
-
-    const { sub: googleId, email, name, picture } = payload;
 
     // ── 2. Find existing user ───────────────────────────────────────────────
     let user = await User.findOne({ email });
@@ -82,7 +104,7 @@ export const googleAuth = async (req, res) => {
     }
 
     // ── 4. Issue JWT ────────────────────────────────────────────────────────
-    const token = jwt.sign(
+    const jwtToken = jwt.sign(
       { userId: user._id, role: user.role },
       process.env.JWT_SECRET,
       { expiresIn: "365d" }
@@ -101,7 +123,7 @@ export const googleAuth = async (req, res) => {
     return res.status(200).json({
       message: `Welcome, ${user.fullname}!`,
       user: sanitizedUser,
-      token,
+      token: jwtToken,
       success: true,
     });
   } catch (error) {
