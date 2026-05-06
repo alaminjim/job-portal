@@ -21,8 +21,8 @@ const userSchema = new mongoose.Schema(
     },
     role: {
       type: String,
-      enum: ["Student", "Recruiter"],
-      default: "Student",
+      enum: ["Applicant", "Recruiter"],
+      default: "Applicant",
       required: true,
     },
     // Google OAuth fields

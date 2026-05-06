@@ -27,7 +27,7 @@ export const googleAuth = async (req, res) => {
         .json({ message: "Google token and role are required", success: false });
     }
 
-    if (!["Student", "Recruiter"].includes(role)) {
+    if (!["Applicant", "Recruiter"].includes(role)) {
       return res
         .status(400)
         .json({ message: "Invalid role selected", success: false });

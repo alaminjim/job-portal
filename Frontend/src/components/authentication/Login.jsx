@@ -13,7 +13,7 @@ import { motion } from "framer-motion";
 import { useGoogleLogin } from "@react-oauth/google";
 
 const Login = () => {
-  const [input, setInput] = useState({ email: "", password: "", role: "Student" });
+  const [input, setInput] = useState({ email: "", password: "", role: "Applicant" });
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { loading, user } = useSelector((store) => store.auth);
@@ -57,7 +57,7 @@ const Login = () => {
   const loginWithGoogle = useGoogleLogin({
     onSuccess: async (tokenResponse) => {
       if (!input.role) {
-        toast.error("Please select a role first (Student or Recruiter) before continuing with Google.");
+        toast.error("Please select a role first (Applicant or Recruiter) before continuing with Google.");
         return;
       }
       try {
@@ -166,12 +166,12 @@ const Login = () => {
                 <Input
                   type="radio"
                   name="role"
-                  value="Student"
-                  checked={input.role === "Student"}
+                  value="Applicant"
+                  checked={input.role === "Applicant"}
                   onChange={changeEventHandler}
                   className="cursor-pointer"
                 />
-                <Label>Student</Label>
+                <Label>Applicant</Label>
               </div>
               <div className="flex items-center gap-2">
                 <Input

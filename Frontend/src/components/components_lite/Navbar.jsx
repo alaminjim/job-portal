@@ -128,7 +128,7 @@ const Navbar = () => {
                     </div>
                   </div>
                   <div className="flex flex-col gap-2">
-                    {user.role === "Student" && (
+                    {user.role === "Applicant" && (
                       <>
                         <Link
                           to="/Profile"
@@ -197,7 +197,7 @@ const Navbar = () => {
             </div>
           ) : (
             <div className="flex flex-col gap-2 mt-3">
-              {user.role === "Student" && (
+              {user.role === "Applicant" && (
                 <>
                   <Link
                     to="/Profile"

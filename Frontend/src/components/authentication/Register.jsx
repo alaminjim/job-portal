@@ -15,7 +15,7 @@ const Register = () => {
     fullname: "",
     email: "",
     password: "",
-    role: "Student",
+    role: "Applicant",
     phoneNumber: "",
     file: "",
   });
@@ -70,7 +70,7 @@ const Register = () => {
   const loginWithGoogle = useGoogleLogin({
     onSuccess: async (tokenResponse) => {
       if (!input.role) {
-        toast.error("Please select a role first (Student or Recruiter) before continuing with Google.");
+        toast.error("Please select a role first (Applicant or Recruiter) before continuing with Google.");
         return;
       }
       try {
@@ -180,12 +180,12 @@ const Register = () => {
             <Input
               type="radio"
               name="role"
-              value="Student"
-              checked={input.role === "Student"}
+              value="Applicant"
+              checked={input.role === "Applicant"}
               onChange={changeEventHandler}
               className="cursor-pointer"
             />
-            <Label>Student</Label>
+            <Label>Applicant</Label>
           </div>
           <div className="flex items-center gap-2">
             <Input
