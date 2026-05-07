@@ -3,11 +3,11 @@ import { motion } from 'framer-motion';
 
 const companies = [
   { name: "Google", logo: "https://www.svgrepo.com/show/475656/google-color.svg" },
-  { name: "Amazon", logo: "https://www.svgrepo.com/show/442887/amazon.svg" },
-  { name: "Microsoft", logo: "https://www.svgrepo.com/show/333581/microsoft.svg" },
-  { name: "Apple", logo: "https://www.svgrepo.com/show/333501/apple.svg" },
-  { name: "Salesforce", logo: "https://www.svgrepo.com/show/331575/salesforce.svg" },
-  { name: "Adobe", logo: "https://www.svgrepo.com/show/333500/adobe.svg" },
+  { name: "Amazon", logo: "https://www.svgrepo.com/show/303223/amazon-logo.svg" },
+  { name: "Microsoft", logo: "https://www.svgrepo.com/show/303204/microsoft-logo.svg" },
+  { name: "Apple", logo: "https://www.svgrepo.com/show/303108/apple-black-logo.svg" },
+  { name: "Salesforce", logo: "https://www.svgrepo.com/show/303233/salesforce-2-logo.svg" },
+  { name: "Adobe", logo: "https://www.svgrepo.com/show/303246/adobe-logo.svg" },
 ];
 
 const TopCompanies = () => {
