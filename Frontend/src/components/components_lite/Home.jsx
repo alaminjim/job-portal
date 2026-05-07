@@ -11,7 +11,6 @@ import useGetAllJobs from "@/hooks/useGetAllJobs";
 import { useNavigate } from "react-router-dom";
 import { setSearchedQuery } from "@/redux/jobSlice";
 import { useDispatch } from "react-redux";
-import TopCompanies from "./TopCompanies";
 import Testimonials from "./Testimonials";
 import Newsletter from "./Newsletter";
 
@@ -35,7 +34,6 @@ const Home = () => {
     <div>
       <Navbar />
       <Header />
-      <TopCompanies />
       <HomeStats />
       <Categories />
       <LatestJobs loading={loading} />
