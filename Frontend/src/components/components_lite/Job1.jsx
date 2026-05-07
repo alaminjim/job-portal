@@ -5,19 +5,60 @@ import { Button } from "../ui/button";
 import { Avatar, AvatarImage, AvatarFallback } from "../ui/avatar";
 import { Badge } from "../ui/badge";
 import { Bookmark, BookMarked } from "lucide-react";
+import { toast } from "sonner";
 import { useDispatch, useSelector } from "react-redux";
 import { motion } from "framer-motion";
+import axios from "axios";
+import { setUser } from "@/redux/authSlice";
 
 const Job1 = ({ job }) => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const { user } = useSelector((store) => store.auth);
-  const [isBookmarked, setIsBookmarked] = useState(false);
+
+  const isBookmarked = user?.profile?.bookmarks?.includes(job?._id) || false;
 
   const isApplied =
     job?.applications?.some(
       (application) =>
         application?.applicant === user?._id || application === user?._id
     ) || false;
+
+  const bookmarkHandler = async () => {
+    try {
+      const token = localStorage.getItem("token");
+      if (!token) {
+        toast.error("Please login to bookmark jobs");
+        return;
+      }
+
+      const res = await axios.get(
+        `${import.meta.env.VITE_USER_API_ENDPOINT}/bookmark/${job?._id}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      if (res.data.success) {
+        // Update user in redux
+        const updatedUser = {
+          ...user,
+          profile: {
+            ...user.profile,
+            bookmarks: res.data.bookmarks,
+          },
+        };
+        dispatch(setUser(updatedUser));
+        localStorage.setItem("user", JSON.stringify(updatedUser));
+        toast.success(res.data.message);
+      }
+    } catch (error) {
+      console.log(error);
+      toast.error(error.response?.data?.message || "Something went wrong");
+    }
+  };
 
   const daysAgoFunction = (mongodbTime) => {
     const createdAt = new Date(mongodbTime);
@@ -52,7 +93,7 @@ const Job1 = ({ job }) => {
           variant="outline"
           className="rounded-full"
           size="icon"
-          onClick={() => setIsBookmarked(!isBookmarked)}
+          onClick={bookmarkHandler}
         >
           {isBookmarked ? (
             <BookMarked className="text-purple-600" />
@@ -108,8 +149,11 @@ const Job1 = ({ job }) => {
         >
           Details
         </Button>
-        <Button className="bg-gradient-to-r from-purple-500 to-indigo-500 hover:opacity-90 text-white font-semibold">
-          {isApplied ? "Applied" : "Save For Later"}
+        <Button 
+          onClick={bookmarkHandler}
+          className={`font-semibold ${isBookmarked ? 'bg-purple-100 text-purple-700 hover:bg-purple-200 border border-purple-200' : 'bg-gradient-to-r from-purple-500 to-indigo-500 hover:opacity-90 text-white'}`}
+        >
+          {isApplied ? "Applied" : isBookmarked ? "Saved" : "Save For Later"}
         </Button>
       </div>
     </motion.div>

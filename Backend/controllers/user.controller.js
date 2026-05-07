@@ -192,3 +192,80 @@ export const updateProfile = async (req, res) => {
       .json({ message: "Server error updating profile", success: false });
   }
 };
+
+// BOOKMARK JOB (SAVE FOR LATER)
+export const bookmarkJob = async (req, res) => {
+  try {
+    const jobId = req.params.id;
+    const userId = req.id;
+
+    const user = await User.findById(userId);
+    if (!user) {
+      return res.status(404).json({
+        message: "User not found",
+        success: false,
+      });
+    }
+
+    const isBookmarked = user.profile.bookmarks.includes(jobId);
+
+    if (isBookmarked) {
+      // Remove bookmark
+      user.profile.bookmarks = user.profile.bookmarks.filter(
+        (id) => id.toString() !== jobId
+      );
+      await user.save();
+      return res.status(200).json({
+        message: "Job removed from bookmarks",
+        bookmarks: user.profile.bookmarks,
+        success: true,
+      });
+    } else {
+      // Add bookmark
+      user.profile.bookmarks.push(jobId);
+      await user.save();
+      return res.status(200).json({
+        message: "Job saved for later",
+        bookmarks: user.profile.bookmarks,
+        success: true,
+      });
+    }
+  } catch (error) {
+    console.error("Bookmark error:", error);
+    return res.status(500).json({
+      message: "Server error while bookmarking job",
+      success: false,
+    });
+  }
+};
+
+// GET ALL BOOKMARKED JOBS
+export const getBookmarkedJobs = async (req, res) => {
+  try {
+    const userId = req.id;
+    const user = await User.findById(userId).populate({
+      path: "profile.bookmarks",
+      populate: {
+        path: "company",
+      },
+    });
+
+    if (!user) {
+      return res.status(404).json({
+        message: "User not found",
+        success: false,
+      });
+    }
+
+    return res.status(200).json({
+      bookmarks: user.profile.bookmarks,
+      success: true,
+    });
+  } catch (error) {
+    console.error("Get bookmarks error:", error);
+    return res.status(500).json({
+      message: "Server error while fetching bookmarks",
+      success: false,
+    });
+  }
+};

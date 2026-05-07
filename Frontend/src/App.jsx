@@ -11,6 +11,7 @@ import Browse from "@/components/components_lite/Browse";
 import Profile from "@/components/components_lite/Profile";
 import Description from "@/components/components_lite/Description";
 import UserApplications from "@/components/components_lite/UserApplications";
+import SavedJobs from "@/components/components_lite/SavedJobs";
 
 // Admin Components
 import Companies from "@/components/admincomponent/Companies";
@@ -37,6 +38,7 @@ const appRouter = createBrowserRouter([
   { path: "/Jobs", element: <Jobs /> },
   { path: "/Browse", element: <Browse /> },
   { path: "/my-applications", element: <UserApplications /> },
+  { path: "/saved-jobs", element: <SavedJobs /> },
 
   // Admin Routes (Protected)
   {
