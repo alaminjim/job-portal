@@ -13,6 +13,7 @@ import { setSearchedQuery } from "@/redux/jobSlice";
 import { useDispatch } from "react-redux";
 import Testimonials from "./Testimonials";
 import Newsletter from "./Newsletter";
+import FAQ from "./FAQ";
 
 const Home = () => {
   const dispatch = useDispatch();
@@ -39,6 +40,7 @@ const Home = () => {
       <LatestJobs loading={loading} />
       <Testimonials />
       <FeatureAura />
+      <FAQ />
       <Newsletter />
       <Footer />
     </div>

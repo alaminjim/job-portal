@@ -1,7 +1,25 @@
 import { Link } from "react-router-dom";
 import { FaGithub, FaTwitter, FaLinkedin } from "react-icons/fa";
+import { useState } from "react";
+import { toast } from "sonner";
 
 const Footer = () => {
+  const [email, setEmail] = useState("");
+
+  const handleSubscribe = (e) => {
+    e.preventDefault();
+    if (!email) {
+      toast.error("Please enter your email");
+      return;
+    }
+    if (!/\S+@\S+\.\S+/.test(email)) {
+      toast.error("Please enter a valid email");
+      return;
+    }
+    toast.success("Subscribed successfully!");
+    setEmail("");
+  };
+
   return (
     <footer className="bg-gray-50/50 backdrop-blur-md text-gray-700 mt-12 border-t border-gray-100">
       <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-10 py-16 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12">
@@ -83,16 +101,18 @@ const Footer = () => {
           </p>
 
           {/* Input + Button */}
-          <div className="flex sm:flex-row sm:items-center mt-2 w-full gap-2">
+          <form onSubmit={handleSubscribe} className="flex sm:flex-row sm:items-center mt-2 w-full gap-2">
             <input
               type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
               placeholder="Enter your email"
               className="border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-purple-500 outline-none flex-1 w-full"
             />
-            <button className="bg-gradient-to-r from-purple-500 to-indigo-500 text-white px-6 py-2 rounded-lg hover:opacity-90 transition font-medium  sm:mt-0 h-full">
+            <button type="submit" className="bg-gradient-to-r from-purple-500 to-indigo-500 text-white px-6 py-2 rounded-lg hover:opacity-90 transition font-medium  sm:mt-0 h-full">
               Subscribe
             </button>
-          </div>
+          </form>
         </div>
       </div>
 

@@ -2,7 +2,27 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import { Send } from 'lucide-react';
 
+import { toast } from 'sonner';
+
 const Newsletter = () => {
+  const [email, setEmail] = React.useState("");
+
+  const handleSubscribe = (e) => {
+    e.preventDefault();
+    if (!email) {
+      toast.error("Please enter your email address");
+      return;
+    }
+    if (!/\S+@\S+\.\S+/.test(email)) {
+      toast.error("Please enter a valid email address");
+      return;
+    }
+    
+    // Simulate API call
+    toast.success("Thank you for subscribing to our newsletter!");
+    setEmail("");
+  };
+
   return (
     <section className="py-20 px-4">
       <div className="max-w-5xl mx-auto">
@@ -27,13 +47,18 @@ const Newsletter = () => {
               Subscribe to our newsletter and get the latest job openings, career advice, and industry trends delivered to your inbox.
             </p>
 
-            <form className="flex flex-col md:flex-row gap-4 max-w-lg mx-auto" onSubmit={(e) => e.preventDefault()}>
+            <form className="flex flex-col md:flex-row gap-4 max-w-lg mx-auto" onSubmit={handleSubscribe}>
               <input 
                 type="email" 
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
                 placeholder="Enter your email address" 
                 className="flex-1 px-6 py-4 rounded-full bg-white/10 border border-white/20 text-white placeholder:text-white/60 focus:outline-none focus:bg-white/20 transition-all text-lg"
               />
-              <button className="bg-white text-purple-700 px-8 py-4 rounded-full font-bold text-lg hover:bg-purple-50 transition-all flex items-center justify-center gap-2 group">
+              <button 
+                type="submit"
+                className="bg-white text-purple-700 px-8 py-4 rounded-full font-bold text-lg hover:bg-purple-50 transition-all flex items-center justify-center gap-2 group"
+              >
                 Subscribe
                 <Send className="w-5 h-5 group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
               </button>
