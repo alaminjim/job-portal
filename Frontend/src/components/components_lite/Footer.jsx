@@ -72,27 +72,29 @@ const Footer = () => {
           </ul>
         </div>
 
-        {/* Newsletter */}
+        {/* Quick Links / Support */}
         <div className="flex flex-col gap-4">
-          <h2 className="font-semibold text-gray-800 text-lg">
-            Subscribe to our Newsletter
-          </h2>
-          <p className="text-sm text-gray-600">
-            Get the latest job updates, resources, and tips — straight to your
-            inbox.
-          </p>
-
-          {/* Input + Button */}
-          <div className="flex sm:flex-row sm:items-center mt-2 w-full gap-2">
-            <input
-              type="email"
-              placeholder="Enter your email"
-              className="border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-purple-500 outline-none flex-1 w-full"
-            />
-            <button className="bg-gradient-to-r from-purple-500 to-indigo-500 text-white px-6 py-2 rounded-lg hover:opacity-90 transition font-medium  sm:mt-0 h-full">
-              Subscribe
-            </button>
-          </div>
+          <h2 className="font-semibold text-gray-800 text-lg">Support</h2>
+          <ul className="text-sm space-y-2">
+            {[
+              { name: "Help Center", to: "/help" },
+              { name: "Terms of Service", to: "/terms" },
+              { name: "Community", to: "/community" },
+              { name: "Careers", to: "/careers" },
+            ].map((link, i) => (
+              <li key={i}>
+                <Link
+                  to={link.to}
+                  className="relative inline-block text-gray-600 font-medium transition-all duration-300 group"
+                >
+                  <span className="group-hover:bg-gradient-to-r group-hover:from-purple-500 group-hover:to-indigo-500 group-hover:bg-clip-text group-hover:text-transparent transition-all duration-300">
+                    {link.name}
+                  </span>
+                  <span className="absolute left-0 bottom-0 w-0 h-[2px] bg-gradient-to-r from-purple-500 to-indigo-500 transition-all duration-300 group-hover:w-full"></span>
+                </Link>
+              </li>
+            ))}
+          </ul>
         </div>
       </div>
 
@@ -102,7 +104,7 @@ const Footer = () => {
         Powered by{" "}
         <a
           href="https://github.com/alaminjim"
-          className="underline text-gray-700 bg-gradient-to-r hover:from-purple-500 hover:to-indigo-500 bg-clip-text  hover:opacity-80 transition"
+          className="underline text-gray-700 hover:text-purple-600 transition"
           target="_blank"
           rel="noopener noreferrer"
         >

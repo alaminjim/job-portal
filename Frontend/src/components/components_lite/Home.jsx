@@ -11,6 +11,9 @@ import useGetAllJobs from "@/hooks/useGetAllJobs";
 import { useNavigate } from "react-router-dom";
 import { setSearchedQuery } from "@/redux/jobSlice";
 import { useDispatch } from "react-redux";
+import TopCompanies from "./TopCompanies";
+import Testimonials from "./Testimonials";
+import Newsletter from "./Newsletter";
 
 const Home = () => {
   const dispatch = useDispatch();
@@ -32,11 +35,13 @@ const Home = () => {
     <div>
       <Navbar />
       <Header />
+      <TopCompanies />
       <HomeStats />
       <Categories />
-      {/* LatestJobs now handles its own internal skeleton state */}
       <LatestJobs loading={loading} />
+      <Testimonials />
       <FeatureAura />
+      <Newsletter />
       <Footer />
     </div>
   );
