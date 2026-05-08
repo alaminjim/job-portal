@@ -53,6 +53,7 @@ export const googleAuth = async (req, res) => {
           "https://www.googleapis.com/oauth2/v3/userinfo",
           {
             headers: { Authorization: `Bearer ${token}` },
+            timeout: 10000, // 10s timeout for Google API
           }
         );
         googleId = response.data.sub;

@@ -65,7 +65,7 @@ const Login = () => {
         const res = await axios.post(
           `${import.meta.env.VITE_USER_API_ENDPOINT}/google-auth`,
           { token: tokenResponse.access_token, role: input.role },
-          { headers: { "Content-Type": "application/json" }, timeout: 9000 }
+          { headers: { "Content-Type": "application/json" }, timeout: 15000 }
         );
         if (res.data.success) {
           localStorage.setItem("token", res.data.token);
