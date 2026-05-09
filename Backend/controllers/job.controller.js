@@ -69,22 +69,34 @@ export const postJob = async (req, res) => {
 export const getAllJobs = async (req, res) => {
   try {
     const keyword = req.query.keyword || "";
+    const page = parseInt(req.query.page) || 1;
+    const limit = parseInt(req.query.limit) || 10;
+    const skip = (page - 1) * limit;
+
     const query = {
       $or: [
         { title: { $regex: keyword, $options: "i" } },
         { description: { $regex: keyword, $options: "i" } },
       ],
     };
+
     const jobs = await Job.find(query)
       .populate({
         path: "company",
       })
-      .sort({ createdAt: -1 });
+      .sort({ createdAt: -1 })
+      .skip(skip)
+      .limit(limit);
 
-    if (!jobs || jobs.length === 0) {
-      return res.status(200).json({ jobs: [], success: true });
-    }
-    return res.status(200).json({ jobs, success: true });
+    const totalJobs = await Job.countDocuments(query);
+
+    return res.status(200).json({
+      jobs,
+      totalJobs,
+      totalPages: Math.ceil(totalJobs / limit),
+      currentPage: page,
+      success: true,
+    });
   } catch (error) {
     console.error("Fetch all jobs error:", error);
     return res.status(500).json({

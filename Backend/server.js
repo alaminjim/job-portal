@@ -45,19 +45,22 @@ const corsOptions = {
 
 app.use(cors(corsOptions));
 
-// Database connection check middleware (Awaited for Cold Starts)
-app.use(async (req, res, next) => {
-  try {
-    // This will wait for the connection to be ready (max 15s)
-    await connectDB();
-    next();
-  } catch (error) {
-    console.error("In-flight DB Connection Error:", error);
-    return res.status(503).json({
-      message: `Database connection not ready. Error: ${connectionError || "Check Atlas IP whitelist or URI"}`,
-      success: false,
-    });
+// Database connection check middleware (Fast-fail if disconnected)
+app.use((req, res, next) => {
+  if (mongoose.connection.readyState === 1) {
+    return next();
   }
+  
+  // If not connected, try to connect (e.g. cold start)
+  connectDB()
+    .then(() => next())
+    .catch((error) => {
+      console.error("In-flight DB Connection Error:", error);
+      res.status(503).json({
+        message: `Database connection not ready. Error: ${connectionError || "Check Atlas IP whitelist or URI"}`,
+        success: false,
+      });
+    });
 });
 
 const PORT = process.env.PORT || 5000;

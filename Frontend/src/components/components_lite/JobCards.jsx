@@ -1,10 +1,11 @@
+import { memo } from "react";
 import { Avatar, AvatarImage, AvatarFallback } from "../ui/avatar";
 import { Badge } from "../ui/badge";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { motion } from "framer-motion";
 
-const JobCards = ({ job }) => {
+const JobCards = memo(({ job }) => {
   const navigate = useNavigate();
   const { user } = useSelector((store) => store.auth);
 
@@ -76,6 +77,6 @@ const JobCards = ({ job }) => {
       </div>
     </motion.div>
   );
-};
+});
 
 export default JobCards;

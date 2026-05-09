@@ -1,51 +1,60 @@
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import { useEffect } from "react";
+import { useEffect, lazy, Suspense } from "react";
 import { useDispatch } from "react-redux";
 import { setLoading } from "@/redux/authSlice";
 
-// Lite Components
+// Loader component for Suspense
+const PageLoader = () => (
+  <div className="flex items-center justify-center h-screen">
+    <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500"></div>
+  </div>
+);
 
-import Home from "@/components/components_lite/Home";
-import Jobs from "@/components/components_lite/Jobs";
-import Browse from "@/components/components_lite/Browse";
-import Profile from "@/components/components_lite/Profile";
-import Description from "@/components/components_lite/Description";
-import UserApplications from "@/components/components_lite/UserApplications";
-import SavedJobs from "@/components/components_lite/SavedJobs";
+// Lazy Loaded Components
+const Home = lazy(() => import("@/components/components_lite/Home"));
+const Jobs = lazy(() => import("@/components/components_lite/Jobs"));
+const Browse = lazy(() => import("@/components/components_lite/Browse"));
+const Profile = lazy(() => import("@/components/components_lite/Profile"));
+const Description = lazy(() => import("@/components/components_lite/Description"));
+const UserApplications = lazy(() => import("@/components/components_lite/UserApplications"));
+const SavedJobs = lazy(() => import("@/components/components_lite/SavedJobs"));
 
-// Admin Components
-import Companies from "@/components/admincomponent/Companies";
-import CompanyCreate from "@/components/admincomponent/CompanyCreate";
-import CompanySetup from "@/components/admincomponent/CompanySetup";
-import AdminJobs from "@/components/admincomponent/AdminJobs";
-import PostJob from "@/components/admincomponent/PostJob";
-import Applicants from "@/components/admincomponent/Applicants";
-import AdminAllApplicants from "@/components/admincomponent/AdminAllApplicants";
-import ProtectedRoute from "@/components/admincomponent/ProtectedRoute";
+const Companies = lazy(() => import("@/components/admincomponent/Companies"));
+const CompanyCreate = lazy(() => import("@/components/admincomponent/CompanyCreate"));
+const CompanySetup = lazy(() => import("@/components/admincomponent/CompanySetup"));
+const AdminJobs = lazy(() => import("@/components/admincomponent/AdminJobs"));
+const PostJob = lazy(() => import("@/components/admincomponent/PostJob"));
+const Applicants = lazy(() => import("@/components/admincomponent/Applicants"));
+const AdminAllApplicants = lazy(() => import("@/components/admincomponent/AdminAllApplicants"));
+const ProtectedRoute = lazy(() => import("@/components/admincomponent/ProtectedRoute"));
 
-// Auth Components
-import Login from "@/components/authentication/Login";
-import Register from "@/components/authentication/Register";
+const Login = lazy(() => import("@/components/authentication/Login"));
+const Register = lazy(() => import("@/components/authentication/Register"));
+
+// Helper to wrap elements in Suspense
+const SuspenseWrapper = ({ children }) => (
+  <Suspense fallback={<PageLoader />}>{children}</Suspense>
+);
 
 const appRouter = createBrowserRouter([
   // Public Routes
-  { path: "/", element: <Home /> },
-  { path: "/Home", element: <Home /> },
-  { path: "/login", element: <Login /> },
-  { path: "/register", element: <Register /> },
-  { path: "/description/:id", element: <Description /> },
-  { path: "/Profile", element: <Profile /> },
-  { path: "/Jobs", element: <Jobs /> },
-  { path: "/Browse", element: <Browse /> },
-  { path: "/my-applications", element: <UserApplications /> },
-  { path: "/saved-jobs", element: <SavedJobs /> },
+  { path: "/", element: <SuspenseWrapper><Home /></SuspenseWrapper> },
+  { path: "/Home", element: <SuspenseWrapper><Home /></SuspenseWrapper> },
+  { path: "/login", element: <SuspenseWrapper><Login /></SuspenseWrapper> },
+  { path: "/register", element: <SuspenseWrapper><Register /></SuspenseWrapper> },
+  { path: "/description/:id", element: <SuspenseWrapper><Description /></SuspenseWrapper> },
+  { path: "/Profile", element: <SuspenseWrapper><Profile /></SuspenseWrapper> },
+  { path: "/Jobs", element: <SuspenseWrapper><Jobs /></SuspenseWrapper> },
+  { path: "/Browse", element: <SuspenseWrapper><Browse /></SuspenseWrapper> },
+  { path: "/my-applications", element: <SuspenseWrapper><UserApplications /></SuspenseWrapper> },
+  { path: "/saved-jobs", element: <SuspenseWrapper><SavedJobs /></SuspenseWrapper> },
 
   // Admin Routes (Protected)
   {
     path: "/admin/companies",
     element: (
       <ProtectedRoute>
-        <Companies />
+        <SuspenseWrapper><Companies /></SuspenseWrapper>
       </ProtectedRoute>
     ),
   },
@@ -53,7 +62,7 @@ const appRouter = createBrowserRouter([
     path: "/admin/companies/create",
     element: (
       <ProtectedRoute>
-        <CompanyCreate />
+        <SuspenseWrapper><CompanyCreate /></SuspenseWrapper>
       </ProtectedRoute>
     ),
   },
@@ -61,7 +70,7 @@ const appRouter = createBrowserRouter([
     path: "/admin/companies/:id",
     element: (
       <ProtectedRoute>
-        <CompanySetup />
+        <SuspenseWrapper><CompanySetup /></SuspenseWrapper>
       </ProtectedRoute>
     ),
   },
@@ -69,7 +78,7 @@ const appRouter = createBrowserRouter([
     path: "/admin/jobs",
     element: (
       <ProtectedRoute>
-        <AdminJobs />
+        <SuspenseWrapper><AdminJobs /></SuspenseWrapper>
       </ProtectedRoute>
     ),
   },
@@ -77,7 +86,7 @@ const appRouter = createBrowserRouter([
     path: "/admin/jobs/create",
     element: (
       <ProtectedRoute>
-        <PostJob />
+        <SuspenseWrapper><PostJob /></SuspenseWrapper>
       </ProtectedRoute>
     ),
   },
@@ -85,7 +94,7 @@ const appRouter = createBrowserRouter([
     path: "/admin/applicants",
     element: (
       <ProtectedRoute>
-        <AdminAllApplicants />
+        <SuspenseWrapper><AdminAllApplicants /></SuspenseWrapper>
       </ProtectedRoute>
     ),
   },
@@ -93,7 +102,7 @@ const appRouter = createBrowserRouter([
     path: "/admin/jobs/:id/applicants",
     element: (
       <ProtectedRoute>
-        <Applicants />
+        <SuspenseWrapper><Applicants /></SuspenseWrapper>
       </ProtectedRoute>
     ),
   },

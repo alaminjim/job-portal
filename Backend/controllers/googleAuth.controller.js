@@ -53,7 +53,7 @@ export const googleAuth = async (req, res) => {
           "https://www.googleapis.com/oauth2/v3/userinfo",
           {
             headers: { Authorization: `Bearer ${token}` },
-            timeout: 10000, // 10s timeout for Google API
+            timeout: 5000, // Reduced to 5s for better responsiveness
           }
         );
         googleId = response.data.sub;
@@ -63,9 +63,13 @@ export const googleAuth = async (req, res) => {
       }
     } catch (err) {
       console.error("Token verification failed:", err.message);
+      const status = err.code === 'ECONNABORTED' ? 504 : 401;
       return res
-        .status(401)
-        .json({ message: "Invalid Google token", success: false });
+        .status(status)
+        .json({ 
+          message: err.code === 'ECONNABORTED' ? "Google API timeout. Please try again." : "Invalid Google token", 
+          success: false 
+        });
     }
 
     // ── 2. Find existing user ───────────────────────────────────────────────
