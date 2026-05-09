@@ -87,7 +87,10 @@ const Login = () => {
     onError: () => toast.error("Google Login Failed"),
   });
 
-
+  const handleDemoLogin = (email, password, role) => {
+    setInput({ email, password, role });
+    toast.info(`Demo ${role} credentials loaded!`);
+  };
 
   useEffect(() => {
     if (user) navigate("/");
@@ -229,6 +232,36 @@ const Login = () => {
               <img src="https://www.svgrepo.com/show/475656/google-color.svg" alt="Google" className="w-5 h-5" />
               <span className="text-gray-700 font-medium">Continue with Google</span>
             </button>
+          </motion.div>
+
+          {/* Demo Login Buttons */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.68 }}
+            className="space-y-3"
+          >
+            <div className="flex items-center w-full">
+              <div className="flex-grow border-t border-gray-300"></div>
+              <span className="px-3 text-sm text-gray-500">Quick Demo</span>
+              <div className="flex-grow border-t border-gray-300"></div>
+            </div>
+            <div className="flex gap-3">
+              <button
+                type="button"
+                onClick={() => handleDemoLogin("user123@gmail.com", "12345678", "Applicant")}
+                className="flex-1 py-2.5 text-sm font-medium text-purple-700 bg-purple-50 border border-purple-200 rounded-xl hover:bg-purple-100 transition shadow-sm"
+              >
+                Applicant Demo
+              </button>
+              <button
+                type="button"
+                onClick={() => handleDemoLogin("job123@gmail.com", "12345678", "Recruiter")}
+                className="flex-1 py-2.5 text-sm font-medium text-indigo-700 bg-indigo-50 border border-indigo-200 rounded-xl hover:bg-indigo-100 transition shadow-sm"
+              >
+                Recruiter Demo
+              </button>
+            </div>
           </motion.div>
 
           {/* Register Link */}
